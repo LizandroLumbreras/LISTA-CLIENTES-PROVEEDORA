@@ -111,37 +111,8 @@
       color: black;
     }
 
-    .modal input {
-      width: 100%;
-      padding: 8px;
-      margin: 5px 0 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    .botones-modal {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .botones-modal button {
-      flex: 1;
-      padding: 10px;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .guardar-btn {
-      background-color: #28a745;
-      color: white;
-    }
-
-    .eliminar-btn {
-      background-color: #dc3545;
-      color: white;
+    .modal p {
+      margin: 10px 0;
     }
 
     @media print {
@@ -179,24 +150,20 @@
     </tbody>
   </table>
 
-  <!-- Modal -->
+  <!-- Modal solo para ver -->
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="cerrarModal()">&times;</span>
-      <h3>Editar Cliente</h3>
-      <input id="nombre" placeholder="Nombre / Razón Social">
-      <input id="rfc" placeholder="RFC">
-      <input id="telefono" placeholder="Teléfono">
-      <input id="email" placeholder="Correo">
-      <input id="direccion" placeholder="Dirección">
-      <input id="ciudad" placeholder="Ciudad">
-      <input id="estado" placeholder="Estado">
-      <input id="cp" placeholder="Código Postal">
-      <input id="condiciones" placeholder="Condiciones Comerciales">
-      <div class="botones-modal">
-        <button class="guardar-btn" onclick="guardarCambios()">Guardar</button>
-        <button class="eliminar-btn" onclick="eliminarCliente()">Eliminar</button>
-      </div>
+      <h3>Detalle del Cliente</h3>
+      <p><strong>Nombre / Razón Social:</strong> <span id="verNombre"></span></p>
+      <p><strong>RFC:</strong> <span id="verRfc"></span></p>
+      <p><strong>Teléfono:</strong> <span id="verTelefono"></span></p>
+      <p><strong>Correo:</strong> <span id="verEmail"></span></p>
+      <p><strong>Dirección:</strong> <span id="verDireccion"></span></p>
+      <p><strong>Ciudad:</strong> <span id="verCiudad"></span></p>
+      <p><strong>Estado:</strong> <span id="verEstado"></span></p>
+      <p><strong>Código Postal:</strong> <span id="verCp"></span></p>
+      <p><strong>Condiciones Comerciales:</strong> <span id="verCondiciones"></span></p>
     </div>
   </div>
 
@@ -232,6 +199,10 @@
 
     function renderTabla(lista) {
       tbody.innerHTML = "";
+      if (lista.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#777;">No se encontraron resultados</td></tr>';
+        return;
+      }
       lista.forEach((data, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -249,49 +220,20 @@
     function verDetalle(index) {
       const c = clientes[index];
       clienteActualId = c.id;
-      document.getElementById("nombre").value = c.nombre || c.razonSocial || '';
-      document.getElementById("rfc").value = c.rfc || '';
-      document.getElementById("telefono").value = c.telefono || '';
-      document.getElementById("email").value = c.email || '';
-      document.getElementById("direccion").value = c.direccion || '';
-      document.getElementById("ciudad").value = c.ciudad || '';
-      document.getElementById("estado").value = c.estado || '';
-      document.getElementById("cp").value = c.cp || '';
-      document.getElementById("condiciones").value = c.condiciones || '';
+      document.getElementById("verNombre").innerText = c.nombre || c.razonSocial || '';
+      document.getElementById("verRfc").innerText = c.rfc || '';
+      document.getElementById("verTelefono").innerText = c.telefono || '';
+      document.getElementById("verEmail").innerText = c.email || '';
+      document.getElementById("verDireccion").innerText = c.direccion || '';
+      document.getElementById("verCiudad").innerText = c.ciudad || '';
+      document.getElementById("verEstado").innerText = c.estado || '';
+      document.getElementById("verCp").innerText = c.cp || '';
+      document.getElementById("verCondiciones").innerText = c.condiciones || '';
       modal.style.display = "block";
     }
 
     function cerrarModal() {
       modal.style.display = "none";
-    }
-
-    function guardarCambios() {
-      const datos = {
-        nombre: document.getElementById("nombre").value,
-        rfc: document.getElementById("rfc").value,
-        telefono: document.getElementById("telefono").value,
-        email: document.getElementById("email").value,
-        direccion: document.getElementById("direccion").value,
-        ciudad: document.getElementById("ciudad").value,
-        estado: document.getElementById("estado").value,
-        cp: document.getElementById("cp").value,
-        condiciones: document.getElementById("condiciones").value
-      };
-      if (clienteActualId) {
-        db.collection("clientes").doc(clienteActualId).update(datos).then(() => {
-          alert("Cliente actualizado");
-          location.reload();
-        });
-      }
-    }
-
-    function eliminarCliente() {
-      if (confirm("¿Estás seguro de eliminar este cliente?")) {
-        db.collection("clientes").doc(clienteActualId).delete().then(() => {
-          alert("Cliente eliminado");
-          location.reload();
-        });
-      }
     }
 
     document.getElementById("buscador").addEventListener("input", function () {
