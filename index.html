@@ -2,15 +2,90 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registros de Clientes</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header img {
+      max-height: 100px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 0;
+      font-weight: 600;
+      color: #003366;
+    }
+
+    #buscador {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #003366;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    @media print {
+      #buscador, header img {
+        display: none;
+      }
+      body {
+        background: white;
+        padding: 0;
+      }
+    }
+  </style>
+
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <h1>Listado de Clientes Registrados</h1>
 
-  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC o correo..." style="width: 100%; padding: 8px; margin-bottom: 20px; font-size: 14px;">
+  <header>
+    <img src="logo_proveedora.jpg" alt="Logo La Proveedora">
+    <h1>Listado de Clientes Registrados</h1>
+  </header>
+
+  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC o correo...">
 
   <table id="tablaClientes">
     <thead>
@@ -27,56 +102,57 @@
     </tbody>
   </table>
 
- <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDyb929si94uBKilI_YNGKZgU9SIqo_l4c",
-    authDomain: "alta-clientes-prov.firebaseapp.com",
-    projectId: "alta-clientes-prov",
-    storageBucket: "alta-clientes-prov.firebasestorage.app",
-    messagingSenderId: "300518490689",
-    appId: "1:300518490689:web:06390a6bbb0c018442bcc0"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDyb929si94uBKilI_YNGKZgU9SIqo_l4c",
+      authDomain: "alta-clientes-prov.firebaseapp.com",
+      projectId: "alta-clientes-prov",
+      storageBucket: "alta-clientes-prov.firebasestorage.app",
+      messagingSenderId: "300518490689",
+      appId: "1:300518490689:web:06390a6bbb0c018442bcc0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-  const tbody = document.querySelector('#tablaClientes tbody');
-  let clientes = [];
+    const tbody = document.querySelector('#tablaClientes tbody');
+    let clientes = [];
 
-  db.collection("clientes").get().then(snapshot => {
-    let folio = 1;
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      data.folio = folio.toString().padStart(4, '0');
-      clientes.push(data);
-      folio++;
+    db.collection("clientes").get().then(snapshot => {
+      let folio = 1;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        data.folio = folio.toString().padStart(4, '0');
+        clientes.push(data);
+        folio++;
+      });
+      renderTabla(clientes);
     });
-    renderTabla(clientes);
-  });
 
-  function renderTabla(lista) {
-    tbody.innerHTML = "";
-    lista.forEach(data => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${data.folio}</td>
-        <td>${data.nombre || data.razonSocial || '-'}</td>
-        <td>${data.rfc || '-'}</td>
-        <td>${data.telefono || '-'}</td>
-        <td>${data.email || '-'}</td>
-      `;
-      tbody.appendChild(tr);
+    function renderTabla(lista) {
+      tbody.innerHTML = "";
+      lista.forEach(data => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${data.folio}</td>
+          <td>${data.nombre || data.razonSocial || '-'}</td>
+          <td>${data.rfc || '-'}</td>
+          <td>${data.telefono || '-'}</td>
+          <td>${data.email || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById("buscador").addEventListener("input", function () {
+      const texto = this.value.toLowerCase();
+      const filtrados = clientes.filter(c =>
+        (c.nombre || c.razonSocial || "").toLowerCase().includes(texto) ||
+        (c.rfc || "").toLowerCase().includes(texto) ||
+        (c.email || "").toLowerCase().includes(texto)
+      );
+      renderTabla(filtrados);
     });
-  }
-
-  document.getElementById("buscador").addEventListener("input", function () {
-    const texto = this.value.toLowerCase();
-    const filtrados = clientes.filter(c =>
-      (c.nombre || c.razonSocial || "").toLowerCase().includes(texto) ||
-      (c.rfc || "").toLowerCase().includes(texto) ||
-      (c.email || "").toLowerCase().includes(texto)
-    );
-    renderTabla(filtrados);
-  });
-</script>
+  </script>
 </body>
 </html>
+
