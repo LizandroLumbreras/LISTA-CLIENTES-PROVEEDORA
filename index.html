@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registros de Clientes</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <h1>Listado de Clientes Registrados</h1>
+
+  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC o correo..." style="width: 100%; padding: 8px; margin-bottom: 20px; font-size: 14px;">
+
+  <table id="tablaClientes">
+    <thead>
+      <tr>
+        <th>Folio</th>
+        <th>Nombre</th>
+        <th>RFC</th>
+        <th>Teléfono</th>
+        <th>Correo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Los datos se llenarán aquí -->
+    </tbody>
+  </table>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_STORAGE_BUCKET",
+      messagingSenderId: "TU_MSG_ID",
+      appId: "TU_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const tbody = document.querySelector('#tablaClientes tbody');
+    let clientes = [];
+
+    db.collection("clientes").orderBy("timestamp", "asc").get().then(snapshot => {
+      let folio = 1;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        data.folio = folio.toString().padStart(4, '0');
+        clientes.push(data);
+        folio++;
+      });
+      renderTabla(clientes);
+    });
+
+    function renderTabla(lista) {
+      tbody.innerHTML = "";
+      lista.forEach(data => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${data.folio}</td>
+          <td>${data.nombre || '-'}</td>
+          <td>${data.rfc || '-'}</td>
+          <td>${data.telefono || '-'}</td>
+          <td>${data.email || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById("buscador").addEventListener("input", function() {
+      const texto = this.value.toLowerCase();
+      const filtrados = clientes.filter(c => 
+        (c.nombre || "").toLowerCase().includes(texto) ||
+        (c.rfc || "").toLowerCase().includes(texto) ||
+        (c.email || "").toLowerCase().includes(texto)
+      );
+      renderTabla(filtrados);
+    });
+  </script>
+</body>
+</html>
