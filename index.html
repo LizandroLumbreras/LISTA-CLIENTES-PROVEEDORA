@@ -99,7 +99,7 @@
       const { data, error } = await supabase
         .from('clientes')
         .select('*')
-        .order('nombrefisca', { ascending: true });
+        .order('nombrefiscal', { ascending: true });
 
       if (error) {
         alert('Error al cargar los clientes');
@@ -108,6 +108,7 @@
       }
 
       datosClientes = data;
+      console.log('Clientes cargados:', data);
       mostrarClientes(data);
     }
 
