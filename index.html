@@ -1,4 +1,4 @@
-.order('nombrefiscal', { ascending: true });<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -96,7 +96,6 @@
       const { data, error } = await supabase
         .from('clientes')
         .select('*')
-        .order('nombrefiscal', { ascending: true });
 
       if (error) {
         alert('Error al cargar los clientes');
@@ -105,6 +104,7 @@
       }
 
       datosClientes = data;
+      console.log('Clientes cargados:', data);
       mostrarClientes(data);
     }
 
