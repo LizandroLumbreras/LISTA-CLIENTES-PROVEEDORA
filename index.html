@@ -3,263 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registros de Clientes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Ver Cliente</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f6f9;
-      color: #333;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    header img {
-      max-height: 100px;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 26px;
-      margin: 0;
-      font-weight: 600;
-      color: #003366;
-    }
-
-    #buscador {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      margin: 20px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    input { padding: 10px; margin: 5px 0; width: 100%; max-width: 400px; }
+    .campo { margin-bottom: 15px; }
+    .sugerencias {
       background: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      border-radius: 10px;
-      overflow: hidden;
+      border: 1px solid #ccc;
+      max-width: 400px;
+      position: absolute;
+      z-index: 1;
     }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-
-    th {
-      background-color: #003366;
-      color: white;
-    }
-
-    tr:hover {
-      background-color: #f1f1f1;
-    }
-
-    .btn-ver {
-      background-color: #0066cc;
-      color: white;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
+    .sugerencias div {
+      padding: 8px;
       cursor: pointer;
     }
-
-    .btn-ver:hover {
-      background-color: #004b99;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
-    }
-
-    .modal p {
-      margin: 10px 0;
-    }
-
-    @media print {
-      #buscador, header img, .btn-ver, .modal {
-        display: none !important;
-      }
+    .sugerencias div:hover {
+      background: #e0e0e0;
     }
   </style>
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
+  <h2>Ver Cliente</h2>
 
-  <header>
-    <img src="logo_proveedora.jpg" alt="Logo La Proveedora">
-    <h1>Listado de Clientes Registrados</h1>
-  </header>
+  <div class="campo">
+    <label for="busqueda">Buscar cliente:</label>
+    <input type="text" id="busqueda" autocomplete="off">
+    <div id="sugerencias" class="sugerencias"></div>
+  </div>
 
-  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC o correo...">
-
-  <table id="tablaClientes">
-    <thead>
-      <tr>
-        <th>Folio</th>
-        <th>Nombre</th>
-        <th>RFC</th>
-        <th>Teléfono</th>
-        <th>Correo</th>
-        <th>Ver</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Los datos se llenarán aquí -->
-    </tbody>
-  </table>
-
-  <!-- Modal solo para ver -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="cerrarModal()">&times;</span>
-      <h3>Detalle del Cliente</h3>
-      <p><strong>Nombre / Razón Social:</strong> <span id="verNombre"></span></p>
-      <p><strong>Regimen Fiscal:</strong> <span id="verRegimenFiscal"></span></p>
-      <p><strong>RFC:</strong> <span id="verRfc"></span></p>
-      <p><strong>Teléfono:</strong> <span id="verTelefono"></span></p>
-      <p><strong>Whatsapp:</strong> <span id="verWhatsapp"></span></p>
-      <p><strong>Correo:</strong> <span id="verEmail"></span></p>
-      <p><strong>Calle:</strong> <span id="verCalle"></span></p>
-      <p><strong>Numero:</strong> <span id="verNumero"></span></p>
-      <p><strong>Ciudad:</strong> <span id="verCiudad"></span></p>
-      <p><strong>Estado:</strong> <span id="verEstado"></span></p>
-      <p><strong>Código Postal:</strong> <span id="verCp"></span></p>
-      <p><strong>Condiciones Comerciales:</strong> <span id="verCondiciones"></span></p>
-      <p><strong>Autorizado para compra 1:</strong> <span id="verAutorizadoparaCompra1"></span></p>
-      <p><strong>Autorizado para compra 2:</strong> <span id="verAutorizadoparaCompra2"></span></p>
-      <p><strong>Autorizado para compra 3:</strong> <span id="verAutorizadoparaCompra3"></span></p>
-    </div>
-    </div>
+  <div id="formulario" style="display:none">
+    <!-- Se insertarán los mismos campos deshabilitados que en tu archivo original -->
   </div>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDyb929si94uBKilI_YNGKZgU9SIqo_l4c",
-      authDomain: "alta-clientes-prov.firebaseapp.com",
-      projectId: "alta-clientes-prov",
-      storageBucket: "alta-clientes-prov.firebasestorage.app",
-      messagingSenderId: "300518490689",
-      appId: "1:300518490689:web:06390a6bbb0c018442bcc0"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
+      'https://cvpbtjlupswbyxenugpz.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....' // Usa el mismo token de tu archivo
+    );
 
-    const tbody = document.querySelector('#tablaClientes tbody');
-    const modal = document.getElementById("modal");
+    const campos = [
+      'nombrefiscal','rfc','regimenfiscal','direccion','numero','colonia','cp','municipio','ciudad','estado','pais',
+      'telefono','whatsapp','email','cfdi','metodopago','formapago','entrega',
+      'autorizado1','autorizado2','autorizado3','comentarios','mayoreo'
+    ];
 
-    let clientes = [];
-    let clienteActualId = null;
+    const formulario = document.getElementById('formulario');
+    const busqueda = document.getElementById('busqueda');
+    const sugerencias = document.getElementById('sugerencias');
 
-    db.collection("clientes").get().then(snapshot => {
-      let folio = 1;
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        data.folio = folio.toString().padStart(4, '0');
-        data.id = doc.id;
-        clientes.push(data);
-        folio++;
-      });
-      renderTabla(clientes);
+    campos.forEach(campo => {
+      const div = document.createElement('div');
+      div.className = 'campo';
+      div.innerHTML = `
+        <label for="${campo}">${campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
+        <input type="${campo === 'email' ? 'email' : campo === 'mayoreo' ? 'checkbox' : 'text'}" id="${campo}" disabled>
+      `;
+      formulario.appendChild(div);
     });
 
-    function renderTabla(lista) {
-      tbody.innerHTML = "";
-      if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#777;">No se encontraron resultados</td></tr>';
+    busqueda.addEventListener('input', async () => {
+      const texto = busqueda.value.trim();
+      if (texto.length < 2) {
+        sugerencias.innerHTML = '';
         return;
       }
-      lista.forEach((data, index) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${data.folio}</td>
-          <td>${data.nombre || data.razonSocial || '-'}</td>
-          <td>${data.rfc || '-'}</td>
-          <td>${data.telefono || '-'}</td>
-          <td>${data.email || '-'}</td>
-          <td><button class="btn-ver" onclick="verDetalle(${index})">Ver</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
 
-    function verDetalle(index) {
-      const c = clientes[index];
-      clienteActualId = c.id;
-      document.getElementById("verNombre").innerText = c.nombre || c.razonSocial || '';
-      document.getElementById("verRfc").innerText = c.rfc || '';
-      document.getElementById("verTelefono").innerText = c.telefono || '';
-      document.getElementById("verEmail").innerText = c.email || '';
-      document.getElementById("verCalle").innerText = c.calle || '';
-      document.getElementById("verNumero").innerText = c.numero || '';
-      document.getElementById("verCiudad").innerText = c.ciudad || '';
-      document.getElementById("verEstado").innerText = c.estado || '';
-      document.getElementById("verCp").innerText = c.cp || '';
-      document.getElementById("verCondiciones").innerText = c.condiciones || '';
-      modal.style.display = "block";
-    }
+      const { data, error } = await supabaseClient
+        .from('clientes')
+        .select('*')
+        .ilike('nombrefiscal', `%${texto}%`)
+        .limit(5);
 
-    function cerrarModal() {
-      modal.style.display = "none";
-    }
-
-    document.getElementById("buscador").addEventListener("input", function () {
-      const texto = this.value.toLowerCase();
-      const filtrados = clientes.filter(c =>
-        (c.nombre || c.razonSocial || "").toLowerCase().includes(texto) ||
-        (c.rfc || "").toLowerCase().includes(texto) ||
-        (c.email || "").toLowerCase().includes(texto)
-      );
-      renderTabla(filtrados);
+      sugerencias.innerHTML = '';
+      if (data) {
+        data.forEach(c => {
+          const div = document.createElement('div');
+          div.textContent = c.nombrefiscal;
+          div.onclick = () => mostrarCliente(c);
+          sugerencias.appendChild(div);
+        });
+      }
     });
 
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        cerrarModal();
-      }
+    function mostrarCliente(cliente) {
+      campos.forEach(c => {
+        const input = document.getElementById(c);
+        if (input) {
+          if (input.type === 'checkbox') {
+            input.checked = cliente[c];
+          } else {
+            input.value = cliente[c] || '';
+          }
+        }
+      });
+      formulario.style.display = 'block';
+      sugerencias.innerHTML = '';
     }
   </script>
-
 </body>
 </html>
