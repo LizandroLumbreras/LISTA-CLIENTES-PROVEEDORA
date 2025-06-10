@@ -17,12 +17,15 @@
     }
     input[type="text"] {
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
       padding: 10px;
       margin: 0 auto 20px auto;
       display: block;
       border: 1px solid #ccc;
       border-radius: 5px;
+    }
+    .contenedor {
+      overflow-x: auto;
     }
     table {
       width: 100%;
@@ -31,8 +34,9 @@
     }
     th, td {
       border: 1px solid #ccc;
-      padding: 8px;
+      padding: 6px;
       text-align: left;
+      font-size: 12px;
     }
     th {
       background-color: #e60000;
@@ -41,28 +45,42 @@
     tr:nth-child(even) {
       background-color: #f9f9f9;
     }
-    .contenedor {
-      overflow-x: auto;
-    }
   </style>
 </head>
 <body>
-  <h2>Clientes Registrados</h2>
-  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC, ciudad...">
+  <h2>Clientes Registrados (Solo Lectura)</h2>
+  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC, ciudad, etc...">
   <div class="contenedor">
     <table id="tablaClientes">
       <thead>
         <tr>
           <th>ID</th>
           <th>Nombre</th>
+          <th>RFC</th>
+          <th>Régimen Fiscal</th>
           <th>Dirección</th>
+          <th>Número</th>
           <th>Colonia</th>
+          <th>CP</th>
+          <th>Municipio</th>
           <th>Ciudad</th>
           <th>Estado</th>
-          <th>Código Postal</th>
-          <th>RFC</th>
-          <th>Email</th>
+          <th>País</th>
           <th>Teléfono</th>
+          <th>WhatsApp</th>
+          <th>Email</th>
+          <th>Uso CFDI</th>
+          <th>Método Pago</th>
+          <th>Forma Pago</th>
+          <th>Entrega</th>
+          <th>Autorizado 1</th>
+          <th>Autorizado 2</th>
+          <th>Autorizado 3</th>
+          <th>Comentarios</th>
+          <th>Timestamp</th>
+          <th>Cliente Tecno</th>
+          <th>Mayoreo</th>
+          <th>Código</th>
         </tr>
       </thead>
       <tbody id="cuerpoTabla"></tbody>
@@ -81,7 +99,7 @@
       const { data, error } = await supabase
         .from('clientes')
         .select('*')
-        .order('id', { ascending: true });
+        .order('nombrefisca', { ascending: true });
 
       if (error) {
         alert('Error al cargar los clientes');
@@ -97,19 +115,36 @@
       const cuerpo = document.getElementById('cuerpoTabla');
       cuerpo.innerHTML = '';
 
-      lista.forEach(cliente => {
+      lista.forEach(c => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
-          <td>${cliente.id || ''}</td>
-          <td>${cliente.Nombre || ''}</td>
-          <td>${cliente.Direccion || ''}</td>
-          <td>${cliente.Colonia || ''}</td>
-          <td>${cliente.Ciudad || ''}</td>
-          <td>${cliente.Estado || ''}</td>
-          <td>${cliente.CodigoPostal || ''}</td>
-          <td>${cliente.RFC || ''}</td>
-          <td>${cliente.Email || ''}</td>
-          <td>${cliente.Telefono || ''}</td>
+          <td>${c.id || ''}</td>
+          <td>${c.nombrefisca || ''}</td>
+          <td>${c.rfc || ''}</td>
+          <td>${c.regimenfiscal || ''}</td>
+          <td>${c.direccion || ''}</td>
+          <td>${c.numero || ''}</td>
+          <td>${c.colonia || ''}</td>
+          <td>${c.cp || ''}</td>
+          <td>${c.municipio || ''}</td>
+          <td>${c.ciudad || ''}</td>
+          <td>${c.estado || ''}</td>
+          <td>${c.pais || ''}</td>
+          <td>${c.telefono || ''}</td>
+          <td>${c.whatsapp || ''}</td>
+          <td>${c.email || ''}</td>
+          <td>${c.cfdi || ''}</td>
+          <td>${c.metodopago || ''}</td>
+          <td>${c.formapago || ''}</td>
+          <td>${c.entrega || ''}</td>
+          <td>${c.autorizado1 || ''}</td>
+          <td>${c.autorizado2 || ''}</td>
+          <td>${c.autorizado3 || ''}</td>
+          <td>${c.comentarios || ''}</td>
+          <td>${c.timestamp || ''}</td>
+          <td>${c.clientetecno || ''}</td>
+          <td>${c.mayoreo || ''}</td>
+          <td>${c.codigo || ''}</td>
         `;
         cuerpo.appendChild(fila);
       });
