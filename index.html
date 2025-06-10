@@ -3,110 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ver Cliente</title>
+  <title>Vista de Clientes</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    input[type="text"], input[type="email"] { padding: 10px; margin: 5px 0; width: 100%; max-width: 400px; }
-    label { font-weight: bold; }
-    .campo { margin-bottom: 15px; }
-    .sugerencias {
-      background: white; border: 1px solid #ccc; max-width: 400px;
-      position: absolute; z-index: 1;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 20px;
     }
-    .sugerencias div {
-      padding: 8px; cursor: pointer;
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
-    .sugerencias div:hover {
-      background: #e0e0e0;
+    input[type="text"] {
+      width: 100%;
+      max-width: 500px;
+      padding: 10px;
+      margin: 0 auto 20px auto;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #e60000;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .contenedor {
+      overflow-x: auto;
     }
   </style>
 </head>
 <body>
-  <h2>Ver Cliente</h2>
-
-  <div class="campo">
-    <label for="busqueda">Buscar cliente:</label>
-    <input type="text" id="busqueda" autocomplete="off">
-    <div id="sugerencias" class="sugerencias"></div>
-  </div>
-
-  <div id="formulario" style="display:none">
-    <!-- Campos se llenan dinámicamente -->
+  <h2>Clientes Registrados</h2>
+  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC, ciudad...">
+  <div class="contenedor">
+    <table id="tablaClientes">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Colonia</th>
+          <th>Ciudad</th>
+          <th>Estado</th>
+          <th>Código Postal</th>
+          <th>RFC</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpoTabla"></tbody>
+    </table>
   </div>
 
   <script>
-    const { createClient } = supabase;
-    const supabaseClient = createClient(
+    const supabase = supabase.createClient(
       'https://cvpbtjlupswbyxenugpz.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' // tu token real completo
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
 
-    const campos = [
-      'nombrefiscal','rfc','regimenfiscal','direccion','numero','colonia','cp','municipio','ciudad','estado','pais',
-      'telefono','whatsapp','email','cfdi','metodopago','formapago','entrega',
-      'autorizado1','autorizado2','autorizado3','comentarios','mayoreo'
-    ];
+    let datosClientes = [];
 
-    const formulario = document.getElementById('formulario');
-    const busqueda = document.getElementById('busqueda');
-    const sugerencias = document.getElementById('sugerencias');
-
-    // Crear los inputs en el DOM
-    campos.forEach(campo => {
-      const div = document.createElement('div');
-      div.className = 'campo';
-      div.innerHTML = `
-        <label for="${campo}">${campo.charAt(0).toUpperCase() + campo.slice(1)}:</label>
-        <input type="${campo === 'email' ? 'email' : campo === 'mayoreo' ? 'checkbox' : 'text'}" id="${campo}" disabled>
-      `;
-      formulario.appendChild(div);
-    });
-
-    busqueda.addEventListener('input', async () => {
-      const texto = busqueda.value.trim();
-      sugerencias.innerHTML = '';
-
-      if (texto.length < 2) return;
-
-      const { data, error } = await supabaseClient
+    async function cargarClientes() {
+      const { data, error } = await supabase
         .from('clientes')
         .select('*')
-        .ilike('nombrefiscal', `%${texto}%`)
-        .limit(5);
+        .order('id', { ascending: true });
 
       if (error) {
-        console.error('Error al buscar:', error.message);
+        alert('Error al cargar los clientes');
+        console.error(error);
         return;
       }
 
-      if (data.length === 0) {
-        sugerencias.innerHTML = '<div>Sin resultados</div>';
-        return;
-      }
+      datosClientes = data;
+      mostrarClientes(data);
+    }
 
-      data.forEach(cliente => {
-        const div = document.createElement('div');
-        div.textContent = cliente.nombrefiscal;
-        div.onclick = () => mostrarCliente(cliente);
-        sugerencias.appendChild(div);
+    function mostrarClientes(lista) {
+      const cuerpo = document.getElementById('cuerpoTabla');
+      cuerpo.innerHTML = '';
+
+      lista.forEach(cliente => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td>${cliente.id || ''}</td>
+          <td>${cliente.Nombre || ''}</td>
+          <td>${cliente.Direccion || ''}</td>
+          <td>${cliente.Colonia || ''}</td>
+          <td>${cliente.Ciudad || ''}</td>
+          <td>${cliente.Estado || ''}</td>
+          <td>${cliente.CodigoPostal || ''}</td>
+          <td>${cliente.RFC || ''}</td>
+          <td>${cliente.Email || ''}</td>
+          <td>${cliente.Telefono || ''}</td>
+        `;
+        cuerpo.appendChild(fila);
       });
+    }
+
+    document.getElementById('buscador').addEventListener('input', function () {
+      const valor = this.value.toLowerCase();
+      const filtrados = datosClientes.filter(cliente =>
+        Object.values(cliente).some(campo =>
+          campo?.toString().toLowerCase().includes(valor)
+        )
+      );
+      mostrarClientes(filtrados);
     });
 
-    function mostrarCliente(cliente) {
-      campos.forEach(c => {
-        const input = document.getElementById(c);
-        if (input) {
-          if (input.type === 'checkbox') {
-            input.checked = cliente[c] === true;
-          } else {
-            input.value = cliente[c] || '';
-          }
-        }
-      });
-      formulario.style.display = 'block';
-      sugerencias.innerHTML = '';
-    }
+    cargarClientes();
   </script>
 </body>
 </html>
