@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+.order('nombrefiscal', { ascending: true });<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -77,10 +77,7 @@
           <th>Autorizado 2</th>
           <th>Autorizado 3</th>
           <th>Comentarios</th>
-          <th>Timestamp</th>
-          <th>Cliente Tecno</th>
           <th>Mayoreo</th>
-          <th>Código</th>
         </tr>
       </thead>
       <tbody id="cuerpoTabla"></tbody>
@@ -99,7 +96,7 @@
       const { data, error } = await supabase
         .from('clientes')
         .select('*')
-        .order('nombrefisca', { ascending: true });
+        .order('nombrefiscal', { ascending: true });
 
       if (error) {
         alert('Error al cargar los clientes');
@@ -119,7 +116,7 @@
         const fila = document.createElement('tr');
         fila.innerHTML = `
           <td>${c.id || ''}</td>
-          <td>${c.nombrefisca || ''}</td>
+          <td>${c.nombrefiscal || ''}</td>
           <td>${c.rfc || ''}</td>
           <td>${c.regimenfiscal || ''}</td>
           <td>${c.direccion || ''}</td>
@@ -141,10 +138,7 @@
           <td>${c.autorizado2 || ''}</td>
           <td>${c.autorizado3 || ''}</td>
           <td>${c.comentarios || ''}</td>
-          <td>${c.timestamp || ''}</td>
-          <td>${c.clientetecno || ''}</td>
           <td>${c.mayoreo || ''}</td>
-          <td>${c.codigo || ''}</td>
         `;
         cuerpo.appendChild(fila);
       });
