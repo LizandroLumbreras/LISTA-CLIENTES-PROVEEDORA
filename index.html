@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vista de Clientes</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> <!-- PRIMERO -->
-</head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -48,17 +48,48 @@
   </style>
 </head>
 <body>
-   <h2>Clientes Registrados (Solo Lectura)</h2>
-  <input type="text" id="buscador" placeholder="Buscar...">
+  <h2>Clientes Registrados (Solo Lectura)</h2>
+  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC, ciudad, etc...">
   <div class="contenedor">
     <table id="tablaClientes">
-      <thead>...</thead>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>RFC</th>
+          <th>Régimen Fiscal</th>
+          <th>Dirección</th>
+          <th>Número</th>
+          <th>Colonia</th>
+          <th>CP</th>
+          <th>Municipio</th>
+          <th>Ciudad</th>
+          <th>Estado</th>
+          <th>País</th>
+          <th>Teléfono</th>
+          <th>WhatsApp</th>
+          <th>Email</th>
+          <th>Uso CFDI</th>
+          <th>Método Pago</th>
+          <th>Forma Pago</th>
+          <th>Entrega</th>
+          <th>Autorizado 1</th>
+          <th>Autorizado 2</th>
+          <th>Autorizado 3</th>
+          <th>Comentarios</th>
+          <th>Timestamp</th>
+          <th>Cliente Tecno</th>
+          <th>Mayoreo</th>
+          <th>Código</th>
+        </tr>
+      </thead>
       <tbody id="cuerpoTabla"></tbody>
     </table>
   </div>
+
   <script>
     const supabase = supabase.createClient(
-      'https://cvpbtjlupswbyxenugpz.supabase.com',
+      'https://cvpbtjlupswbyxenugpz.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
 
@@ -68,7 +99,7 @@
       const { data, error } = await supabase
         .from('clientes')
         .select('*')
-        .order('nombrefiscal', { ascending: true });
+        .order('nombrefisca', { ascending: true });
 
       if (error) {
         alert('Error al cargar los clientes');
@@ -77,7 +108,6 @@
       }
 
       datosClientes = data;
-      console.log('Clientes cargados:', data);
       mostrarClientes(data);
     }
 
