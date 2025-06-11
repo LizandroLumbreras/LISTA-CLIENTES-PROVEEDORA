@@ -1,76 +1,122 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vista Cliente</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consulta de Clientes</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    input { padding: 10px; margin: 5px 0; width: 100%; max-width: 400px; }
-    .campo { margin-bottom: 15px; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f3f4f6;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo img {
+      max-width: 180px;
+      height: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #e60000;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
     .sugerencias {
       background: white;
       border: 1px solid #ccc;
-      max-width: 400px;
+      border-radius: 8px;
       position: absolute;
-      z-index: 1;
+      z-index: 10;
+      max-width: 100%;
     }
     .sugerencias div {
-      padding: 8px;
+      padding: 10px;
       cursor: pointer;
     }
     .sugerencias div:hover {
-      background: #e0e0e0;
+      background: #f0f0f0;
     }
-    .logo {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.logo img {
-  max-width: 100%;
-  height: auto;
-  max-height: 100px;
-}
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-top: 20px;
+    }
+    .campo {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input[disabled] {
+      background: #f9fafb;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 6px;
+      width: 100%;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="logo">
-  <img src="logo_proveedora.jpg" alt="Logo La Proveedora" height="80">
-</div>
-  <h2>Consulta de Clientes</h2>
+  <div class="container">
+    <div class="logo">
+      <img src="logo_proveedora.jpg" alt="Logo La Proveedora">
+    </div>
+    <h2>Consulta de Clientes</h2>
 
-  <div class="campo">
-    <label for="busqueda">Buscar cliente:</label>
-    <input type="text" id="busqueda" autocomplete="off">
+    <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
     <div id="sugerencias" class="sugerencias"></div>
-  </div>
 
-  <div id="formulario" style="display:none">
-    <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
-    <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
-    <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
-    <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
-    <div class="campo"><label>Número:</label><input id="numero" disabled></div>
-    <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
-    <div class="campo"><label>CP:</label><input id="cp" disabled></div>
-    <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
-    <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
-    <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
-    <div class="campo"><label>País:</label><input id="pais" disabled></div>
-    <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
-    <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
-    <div class="campo"><label>Email:</label><input id="email" disabled></div>
-    <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
-    <div class="campo"><label>Método Pago:</label><input id="metodopago" disabled></div>
-    <div class="campo"><label>Forma Pago:</label><input id="formapago" disabled></div>
-    <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
-    <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
-    <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
-    <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
-    <div class="campo"><label>Comentarios:</label><input id="comentarios" disabled></div>
-    <div class="campo">
-      <label><input type="checkbox" id="mayoreo" disabled> Cliente de Mayoreo</label>
+    <div id="formulario" class="card" style="display:none">
+      <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
+      <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
+      <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
+      <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
+      <div class="campo"><label>Número:</label><input id="numero" disabled></div>
+      <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
+      <div class="campo"><label>CP:</label><input id="cp" disabled></div>
+      <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
+      <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
+      <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
+      <div class="campo"><label>País:</label><input id="pais" disabled></div>
+      <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
+      <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
+      <div class="campo"><label>Email:</label><input id="email" disabled></div>
+      <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
+      <div class="campo"><label>Método de Pago:</label><input id="metodopago" disabled></div>
+      <div class="campo"><label>Forma de Pago:</label><input id="formapago" disabled></div>
+      <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
+      <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
+      <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
+      <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
+      <div class="campo"><label>Comentarios:</label><input id="comentarios" disabled></div>
+      <div class="campo"><label><input type="checkbox" id="mayoreo" disabled> Cliente de Mayoreo</label></div>
     </div>
   </div>
 
@@ -82,7 +128,6 @@
     );
 
     const campos = ['nombrefiscal', 'rfc', 'regimenfiscal', 'direccion', 'numero', 'colonia', 'cp', 'municipio', 'ciudad', 'estado', 'pais', 'telefono', 'whatsapp', 'email', 'cfdi', 'metodopago', 'formapago', 'entrega', 'autorizado1', 'autorizado2', 'autorizado3', 'comentarios', 'mayoreo'];
-
     const elementos = {};
     campos.forEach(id => elementos[id] = document.getElementById(id));
 
