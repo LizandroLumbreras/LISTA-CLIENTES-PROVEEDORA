@@ -104,12 +104,12 @@
       }
       
       console.log('Clientes cargados:', data);
-      datosClientes = data;
-      mostrarClientes(data);
-    }
-    
-if (data.length > 0) {
-  console.log('Campos disponibles:', Object.keys(data[0]));
+     if (data.length > 0) {
+    console.log('Campos disponibles:', Object.keys(data[0]));
+  }
+
+  datosClientes = data;
+  mostrarClientes(data);
 }
     
     function mostrarClientes(lista) {
