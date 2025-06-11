@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vista de Clientes</title>
-  <!-- ✅ PRIMERO se carga la librería de Supabase -->
+
+  <!-- ✅ Cargar la librería de Supabase ANTES de usarla -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,149 +18,31 @@
       text-align: center;
       margin-bottom: 20px;
     }
-    input[type="text"] {
-      width: 100%;
-      max-width: 600px;
-      padding: 10px;
-      margin: 0 auto 20px auto;
-      display: block;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .contenedor {
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: left;
-      font-size: 12px;
-    }
-    th {
-      background-color: #e60000;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
   </style>
 </head>
 <body>
-  <h2>Clientes Registrados (Solo Lectura)</h2>
-  <input type="text" id="buscador" placeholder="Buscar por nombre, RFC, ciudad, etc...">
-  <div class="contenedor">
-    <table id="tablaClientes">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre Fiscal</th>
-          <th>RFC</th>
-          <th>Régimen Fiscal</th>
-          <th>Dirección</th>
-          <th>Número</th>
-          <th>Colonia</th>
-          <th>CP</th>
-          <th>Municipio</th>
-          <th>Ciudad</th>
-          <th>Estado</th>
-          <th>País</th>
-          <th>Teléfono</th>
-          <th>WhatsApp</th>
-          <th>Email</th>
-          <th>Uso CFDI</th>
-          <th>Método Pago</th>
-          <th>Forma Pago</th>
-          <th>Entrega</th>
-          <th>Autorizado 1</th>
-          <th>Autorizado 2</th>
-          <th>Autorizado 3</th>
-          <th>Comentarios</th>
-          <th>Mayoreo</th>
-        </tr>
-      </thead>
-      <tbody id="cuerpoTabla"></tbody>
-    </table>
-  </div>
+  <h2>Clientes Registrados</h2>
 
-  <!-- ✅ DESPUÉS de cargar la librería, ahora tu script -->
   <script>
+    // ✅ Inicializar Supabase correctamente DESPUÉS de que se cargó la librería
     const supabase = supabase.createClient(
       'https://cvpbtjlupswbyxenugpz.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
 
-    let datosClientes = [];
-
+    // ✅ Probar si conecta correctamente
     async function cargarClientes() {
       const { data, error } = await supabase
         .from('clientes')
         .select('*');
 
       if (error) {
-        alert('Error al cargar los clientes');
-        console.error(error);
+        console.error('Error al cargar:', error);
         return;
       }
 
       console.log('Clientes cargados:', data);
-      if (data.length > 0) {
-        console.log('Campos disponibles:', Object.keys(data[0]));
-      }
-
-      datosClientes = data;
-      mostrarClientes(data);
     }
-
-    function mostrarClientes(lista) {
-      const cuerpo = document.getElementById('cuerpoTabla');
-      cuerpo.innerHTML = '';
-
-      lista.forEach(c => {
-        const fila = document.createElement('tr');
-        fila.innerHTML = `
-          <td>${c.id || ''}</td>
-          <td>${c.nombrefisca || ''}</td>
-          <td>${c.rfc || ''}</td>
-          <td>${c.regimenfiscal || ''}</td>
-          <td>${c.direccion || ''}</td>
-          <td>${c.numero || ''}</td>
-          <td>${c.colonia || ''}</td>
-          <td>${c.cp || ''}</td>
-          <td>${c.municipio || ''}</td>
-          <td>${c.ciudad || ''}</td>
-          <td>${c.estado || ''}</td>
-          <td>${c.pais || ''}</td>
-          <td>${c.telefono || ''}</td>
-          <td>${c.whatsapp || ''}</td>
-          <td>${c.email || ''}</td>
-          <td>${c.cfdi || ''}</td>
-          <td>${c.metodopago || ''}</td>
-          <td>${c.formapago || ''}</td>
-          <td>${c.entrega || ''}</td>
-          <td>${c.autorizado1 || ''}</td>
-          <td>${c.autorizado2 || ''}</td>
-          <td>${c.autorizado3 || ''}</td>
-          <td>${c.comentarios || ''}</td>
-          <td>${c.mayoreo || ''}</td>
-        `;
-        cuerpo.appendChild(fila);
-      });
-    }
-
-    document.getElementById('buscador').addEventListener('input', function () {
-      const valor = this.value.toLowerCase();
-      const filtrados = datosClientes.filter(cliente =>
-        Object.values(cliente).some(campo =>
-          campo?.toString().toLowerCase().includes(valor)
-        )
-      );
-      mostrarClientes(filtrados);
-    });
 
     cargarClientes();
   </script>
