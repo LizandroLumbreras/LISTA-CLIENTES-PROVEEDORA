@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vista de Clientes</title>
+  <!-- ✅ PRIMERO se carga la librería de Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
@@ -84,6 +85,7 @@
     </table>
   </div>
 
+  <!-- ✅ DESPUÉS de cargar la librería, ahora tu script -->
   <script>
     const supabase = supabase.createClient(
       'https://cvpbtjlupswbyxenugpz.supabase.co',
@@ -95,23 +97,23 @@
     async function cargarClientes() {
       const { data, error } = await supabase
         .from('clientes')
-        .select('*')
+        .select('*');
 
       if (error) {
         alert('Error al cargar los clientes');
         console.error(error);
         return;
       }
-      
-      console.log('Clientes cargados:', data);
-     if (data.length > 0) {
-    console.log('Campos disponibles:', Object.keys(data[0]));
-  }
 
-  datosClientes = data;
-  mostrarClientes(data);
-}
-    
+      console.log('Clientes cargados:', data);
+      if (data.length > 0) {
+        console.log('Campos disponibles:', Object.keys(data[0]));
+      }
+
+      datosClientes = data;
+      mostrarClientes(data);
+    }
+
     function mostrarClientes(lista) {
       const cuerpo = document.getElementById('cuerpoTabla');
       cuerpo.innerHTML = '';
