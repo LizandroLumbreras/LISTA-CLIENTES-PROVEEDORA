@@ -107,7 +107,11 @@
       datosClientes = data;
       mostrarClientes(data);
     }
-
+    
+if (data.length > 0) {
+  console.log('Campos disponibles:', Object.keys(data[0]));
+}
+    
     function mostrarClientes(lista) {
       const cuerpo = document.getElementById('cuerpoTabla');
       cuerpo.innerHTML = '';
@@ -116,7 +120,7 @@
         const fila = document.createElement('tr');
         fila.innerHTML = `
           <td>${c.id || ''}</td>
-          <td>${c.nombrefiscal || ''}</td>
+          <td>${c.nombrefisca || ''}</td>
           <td>${c.rfc || ''}</td>
           <td>${c.regimenfiscal || ''}</td>
           <td>${c.direccion || ''}</td>
