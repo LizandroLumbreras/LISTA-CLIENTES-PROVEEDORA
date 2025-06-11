@@ -1,50 +1,116 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vista de Clientes</title>
-
-  <!-- ✅ Cargar la librería de Supabase ANTES de usarla -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vista Cliente</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
-      padding: 20px;
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    input { padding: 10px; margin: 5px 0; width: 100%; max-width: 400px; }
+    .campo { margin-bottom: 15px; }
+    .sugerencias {
+      background: white;
+      border: 1px solid #ccc;
+      max-width: 400px;
+      position: absolute;
+      z-index: 1;
     }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    .sugerencias div {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .sugerencias div:hover {
+      background: #e0e0e0;
     }
   </style>
 </head>
 <body>
-  <h2>Clientes Registrados</h2>
+  <h2>Consulta de Clientes</h2>
+
+  <div class="campo">
+    <label for="busqueda">Buscar cliente:</label>
+    <input type="text" id="busqueda" autocomplete="off">
+    <div id="sugerencias" class="sugerencias"></div>
+  </div>
+
+  <div id="formulario" style="display:none">
+    <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
+    <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
+    <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
+    <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
+    <div class="campo"><label>Número:</label><input id="numero" disabled></div>
+    <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
+    <div class="campo"><label>CP:</label><input id="cp" disabled></div>
+    <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
+    <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
+    <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
+    <div class="campo"><label>País:</label><input id="pais" disabled></div>
+    <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
+    <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
+    <div class="campo"><label>Email:</label><input id="email" disabled></div>
+    <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
+    <div class="campo"><label>Método Pago:</label><input id="metodopago" disabled></div>
+    <div class="campo"><label>Forma Pago:</label><input id="formapago" disabled></div>
+    <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
+    <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
+    <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
+    <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
+    <div class="campo"><label>Comentarios:</label><input id="comentarios" disabled></div>
+    <div class="campo">
+      <label><input type="checkbox" id="mayoreo" disabled> Cliente de Mayoreo</label>
+    </div>
+  </div>
 
   <script>
-    // ✅ Inicializar Supabase correctamente DESPUÉS de que se cargó la librería
-    const supabase = supabase.createClient(
+    const { createClient } = supabase;
+    const supabaseClient = createClient(
       'https://cvpbtjlupswbyxenugpz.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
 
-    // ✅ Probar si conecta correctamente
-    async function cargarClientes() {
-      const { data, error } = await supabase
-        .from('clientes')
-        .select('*');
+    const campos = ['nombrefiscal', 'rfc', 'regimenfiscal', 'direccion', 'numero', 'colonia', 'cp', 'municipio', 'ciudad', 'estado', 'pais', 'telefono', 'whatsapp', 'email', 'cfdi', 'metodopago', 'formapago', 'entrega', 'autorizado1', 'autorizado2', 'autorizado3', 'comentarios', 'mayoreo'];
 
-      if (error) {
-        console.error('Error al cargar:', error);
+    const elementos = {};
+    campos.forEach(id => elementos[id] = document.getElementById(id));
+
+    const busqueda = document.getElementById('busqueda');
+    const sugerencias = document.getElementById('sugerencias');
+    const formulario = document.getElementById('formulario');
+
+    busqueda.addEventListener('input', async () => {
+      const texto = busqueda.value.trim();
+      if (texto.length < 2) {
+        sugerencias.innerHTML = '';
         return;
       }
 
-      console.log('Clientes cargados:', data);
-    }
+      const { data } = await supabaseClient
+        .from('clientes')
+        .select(campos.join(','))
+        .ilike('nombrefiscal', `%${texto}%`)
+        .limit(5);
 
-    cargarClientes();
+      sugerencias.innerHTML = '';
+      data.forEach(cliente => {
+        const div = document.createElement('div');
+        div.textContent = cliente.nombrefiscal;
+        div.onclick = () => mostrarCliente(cliente);
+        sugerencias.appendChild(div);
+      });
+    });
+
+    function mostrarCliente(cliente) {
+      campos.forEach(id => {
+        if (id === 'mayoreo') {
+          elementos[id].checked = cliente[id];
+        } else {
+          elementos[id].value = cliente[id] || '';
+        }
+      });
+      formulario.style.display = 'block';
+      sugerencias.innerHTML = '';
+    }
   </script>
 </body>
 </html>
