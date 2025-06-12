@@ -60,13 +60,14 @@
       background: #f0f0f0;
     }
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      margin-top: 20px;
-    }
+.card {
+  background: rgba(255, 255, 255, 0.85); /* Blanco con transparencia */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-top: 20px;
+  backdrop-filter: blur(2px); /* Opcional: efecto de desenfoque detrás */
+}
     .campo {
       margin-bottom: 15px;
     }
@@ -75,13 +76,14 @@
       display: block;
       margin-bottom: 4px;
     }
-    input[disabled] {
-      background: #f9fafb;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 6px;
-      width: 100%;
-    }
+input[disabled] {
+  background: rgba(255, 255, 255, 0.75); /* blanco translúcido */
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  width: 100%;
+  backdrop-filter: blur(1px); /* opcional: ligero desenfoque */
+}
     @media (max-width: 600px) {
       .container {
         padding: 15px;
