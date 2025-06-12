@@ -61,28 +61,33 @@
     }
 
 .card {
-  background: rgba(255, 255, 255, 0.55); /* Blanco con transparencia */
+  background: rgba(255, 255, 255, 0.35); /* más transparente */
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   margin-top: 20px;
-  backdrop-filter: blur(3px); /* Opcional: efecto de desenfoque detrás */
+  backdrop-filter: blur(5px); /* más difuso para mayor legibilidad */
+  color: #111; /* texto más oscuro para mejor contraste */
 }
     .campo {
       margin-bottom: 15px;
     }
-    label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 4px;
+  label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+  color: #111; /* asegura buen contraste */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); /* sombra sutil */
+}
     }
 input[disabled] {
-  background: rgba(255, 255, 255, 0.55); /* blanco translúcido */
-  border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.35); /* más transparente */
+  border: 1px solid #ccc;
   padding: 10px;
   border-radius: 6px;
   width: 100%;
-  backdrop-filter: blur(3px); /* opcional: ligero desenfoque */
+  color: #111; /* texto oscuro para mejor visibilidad */
+  backdrop-filter: blur(5px);
 }
     @media (max-width: 600px) {
       .container {
