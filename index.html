@@ -51,11 +51,20 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       transition: all 0.2s ease;
     }
-    input[type="text"]:focus {
-      outline: none;
-      border: 1px solid #e60000;
-      box-shadow: 0 0 6px rgba(230, 0, 0, 0.4);
-    }
+    input[disabled] {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  min-width: 0;
+  width: auto; /* se adapta al contenido */
+  flex: 1;
+  color: #111;
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+  text-overflow: ellipsis; /* importante para que no desborde */
+  white-space: nowrap;
+}
     .sugerencias {
       background: white;
       border: 1px solid #ccc;
@@ -84,12 +93,12 @@
   color: #111;
   box-sizing: border-box;
 }
-    .campo {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin: 0;
-    }
+   .campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0; /* ← evita que las columnas se estiren más de lo necesario */
+}
     label {
       font-weight: 600;
       display: block;
