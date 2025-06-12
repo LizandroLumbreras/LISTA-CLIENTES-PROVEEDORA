@@ -88,7 +88,21 @@ input[disabled] {
       .container {
         padding: 15px;
       }
-    }
+      button {
+  background: rgba(230, 0, 0, 0.85); /* rojo translúcido */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  backdrop-filter: blur(1px); /* opcional */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: rgba(200, 0, 0, 0.95); /* más oscuro al pasar el mouse */
+}
   </style>
 </head>
 <body>
