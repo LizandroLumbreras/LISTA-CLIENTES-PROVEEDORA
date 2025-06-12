@@ -74,17 +74,19 @@ input[type="text"]:focus {
     }
 
 .card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px; /* espacio entre columnas y filas */
   background: rgba(255, 255, 255, 0.35);
-  padding: 24px;
+  padding: 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   margin-top: 20px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(6px);
   color: #111;
   box-sizing: border-box;
 }
-    .campo {
-  margin-bottom: 12px;
+.campo {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -106,10 +108,11 @@ input[disabled] {
   color: #111; /* texto oscuro para mejor visibilidad */
   backdrop-filter: blur(5px);
 }
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
+ @media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr; /* 1 sola columna en pantallas pequeñas */
+  }
+}
       button {
   background: rgba(230, 0, 0, 0.85); /* rojo translúcido */
   color: white;
