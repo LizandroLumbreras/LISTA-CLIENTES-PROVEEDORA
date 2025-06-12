@@ -6,18 +6,18 @@
   <title>Consulta de Clientes</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-  body {
-  margin: 0;
-  padding: 0;
-  background-image: url('fondo.jpg'); /* Asegúrate que el nombre y ubicación sean correctos */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f3f4f6; /* respaldo en caso de que no cargue la imagen */
-  color: #333;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('fondo.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f4f6;
+      color: #333;
+    }
     .container {
       max-width: 800px;
       margin: auto;
@@ -36,27 +36,26 @@
       margin-bottom: 30px;
       color: #e60000;
     }
-  input[type="text"] {
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto 20px auto;
-  display: block;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(5px);
-  color: #111;
-  font-size: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.2s ease;
-}
-
-input[type="text"]:focus {
-  outline: none;
-  border: 1px solid #e60000;
-  box-shadow: 0 0 6px rgba(230, 0, 0, 0.4);
-}
+    input[type="text"] {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 20px auto;
+      display: block;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(5px);
+      color: #111;
+      font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border: 1px solid #e60000;
+      box-shadow: 0 0 6px rgba(230, 0, 0, 0.4);
+    }
     .sugerencias {
       background: white;
       border: 1px solid #ccc;
@@ -72,213 +71,124 @@ input[type="text"]:focus {
     .sugerencias div:hover {
       background: #f0f0f0;
     }
-
-.card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 24px;
-  background: rgba(255, 255, 255, 0.35);
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  margin-top: 20px;
-  backdrop-filter: blur(6px);
-  color: #111;
-  box-sizing: border-box;
-}
-.campo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-}
-  label {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 4px;
-  color: #111; /* asegura buen contraste */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); /* sombra sutil */
-}
-    
-input[disabled] {
-  background: rgba(255, 255, 255, 0.35); /* más transparente */
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 6px;
-  width: 100%;
-  color: #111; /* texto oscuro para mejor visibilidad */
-  backdrop-filter: blur(5px);
-}
- @media (max-width: 768px) {
-  .card {
-    grid-template-columns: 1fr; /* 1 sola columna en pantallas pequeñas */
-  }
-}
-      button {
-  background: rgba(230, 0, 0, 0.85); /* rojo translúcido */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  backdrop-filter: blur(1px); /* opcional */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: rgba(200, 0, 0, 0.95); /* más oscuro al pasar el mouse */
-}
+    .card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px;
+      background: rgba(255, 255, 255, 0.35);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      margin-top: 20px;
+      backdrop-filter: blur(6px);
+      color: #111;
+      box-sizing: border-box;
+    }
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 0;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+      color: #111;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    }
+    input[disabled] {
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 6px;
+      width: 100%;
+      color: #111;
+      backdrop-filter: blur(5px);
+    }
+    @media (max-width: 768px) {
+      .card {
+        grid-template-columns: 1fr;
+      }
+    }
+    button {
+      background: rgba(230, 0, 0, 0.85);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      backdrop-filter: blur(1px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: rgba(200, 0, 0, 0.95);
+    }
   </style>
 </head>
 <body>
-  
-</div>
   <div class="container">
     <div class="logo">
       <img src="logo_proveedora.jpg" alt="Logo La Proveedora">
     </div>
     <h2>Consulta de Clientes</h2>
-
     <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
     <div id="sugerencias" class="sugerencias"></div>
-<div style="text-align: center; margin-top: 20px;">
-  <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')" style="padding: 10px 20px; background-color: #e60000; color: white; border: none; border-radius: 5px; cursor: pointer;">
-    Imprimir Formulario Completo
-  </button>
+    <div style="text-align: center; margin-top: 20px;">
+      <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">
+        Imprimir Formulario Completo
+      </button>
+    </div>
     <div id="formulario" class="card" style="display:none">
-  <div class="campo">
-    <label>Nombre Fiscal:</label>
-    <input id="nombrefiscal" disabled>
+      <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
+      <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
+      <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
+      <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
+      <div class="campo"><label>Número:</label><input id="numero" disabled></div>
+      <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
+      <div class="campo"><label>CP:</label><input id="cp" disabled></div>
+      <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
+      <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
+      <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
+      <div class="campo"><label>País:</label><input id="pais" disabled></div>
+      <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
+      <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
+      <div class="campo"><label>Email:</label><input id="email" disabled></div>
+      <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
+      <div class="campo"><label>Método de Pago:</label><input id="metodopago" disabled></div>
+      <div class="campo"><label>Forma de Pago:</label><input id="formapago" disabled></div>
+      <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
+      <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
+      <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
+      <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
+      <div class="campo" style="grid-column: span 2;"><label>Comentarios:</label><input id="comentarios" disabled></div>
+      <div class="campo" style="grid-column: span 2;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
+    </div>
   </div>
-  <div class="campo">
-    <label>RFC:</label>
-    <input id="rfc" disabled>
-  </div>
-
-  <div class="campo">
-    <label>Régimen Fiscal:</label>
-    <input id="regimenfiscal" disabled>
-  </div>
-  <div class="campo">
-    <label>Dirección:</label>
-    <input id="direccion" disabled>
-  </div>
-
-  <div class="campo">
-    <label>Número:</label>
-    <input id="numero" disabled>
-  </div>
-  <div class="campo">
-    <label>Colonia:</label>
-    <input id="colonia" disabled>
-  </div>
-
-  <div class="campo">
-    <label>CP:</label>
-    <input id="cp" disabled>
-  </div>
-  <div class="campo">
-    <label>Municipio:</label>
-    <input id="municipio" disabled>
-  </div>
-
-  <div class="campo">
-    <label>Ciudad:</label>
-    <input id="ciudad" disabled>
-  </div>
-  <div class="campo">
-    <label>Estado:</label>
-    <input id="estado" disabled>
-  </div>
-
-  <div class="campo">
-    <label>País:</label>
-    <input id="pais" disabled>
-  </div>
-  <div class="campo">
-    <label>Teléfono:</label>
-    <input id="telefono" disabled>
-  </div>
-
-  <div class="campo">
-    <label>WhatsApp:</label>
-    <input id="whatsapp" disabled>
-  </div>
-  <div class="campo">
-    <label>Email:</label>
-    <input id="email" disabled>
-  </div>
-
-  <div class="campo">
-    <label>Uso CFDI:</label>
-    <input id="cfdi" disabled>
-  </div>
-  <div class="campo">
-    <label>Método de Pago:</label>
-    <input id="metodopago" disabled>
-  </div>
-
-  <div class="campo">
-    <label>Forma de Pago:</label>
-    <input id="formapago" disabled>
-  </div>
-  <div class="campo">
-    <label>Entrega:</label>
-    <input id="entrega" disabled>
-  </div>
-
-  <div class="campo">
-    <label>Autorizado 1:</label>
-    <input id="autorizado1" disabled>
-  </div>
-  <div class="campo">
-    <label>Autorizado 2:</label>
-    <input id="autorizado2" disabled>
-  </div>
-
-  <div class="campo">
-    <label>Autorizado 3:</label>
-    <input id="autorizado3" disabled>
-  </div>
-  <div class="campo" style="grid-column: span 2;">
-    <label>Comentarios:</label>
-    <input id="comentarios" disabled>
-  </div>
-
-  <div class="campo" style="grid-column: span 2;">
-    <label>Cliente de Mayoreo:</label>
-    <input type="checkbox" id="mayoreo" disabled>
-  </div>
-</div>
   <script>
     const { createClient } = supabase;
     const supabaseClient = createClient(
       'https://cvpbtjlupswbyxenugpz.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
-
     const campos = ['nombrefiscal', 'rfc', 'regimenfiscal', 'direccion', 'numero', 'colonia', 'cp', 'municipio', 'ciudad', 'estado', 'pais', 'telefono', 'whatsapp', 'email', 'cfdi', 'metodopago', 'formapago', 'entrega', 'autorizado1', 'autorizado2', 'autorizado3', 'comentarios', 'mayoreo'];
     const elementos = {};
     campos.forEach(id => elementos[id] = document.getElementById(id));
-
     const busqueda = document.getElementById('busqueda');
     const sugerencias = document.getElementById('sugerencias');
     const formulario = document.getElementById('formulario');
-
     busqueda.addEventListener('input', async () => {
       const texto = busqueda.value.trim();
       if (texto.length < 2) {
         sugerencias.innerHTML = '';
         return;
       }
-
       const { data } = await supabaseClient
         .from('clientes')
         .select(campos.join(','))
         .ilike('nombrefiscal', `%${texto}%`)
         .limit(5);
-
       sugerencias.innerHTML = '';
       data.forEach(cliente => {
         const div = document.createElement('div');
@@ -287,7 +197,6 @@ button:hover {
         sugerencias.appendChild(div);
       });
     });
-
     function mostrarCliente(cliente) {
       campos.forEach(id => {
         if (id === 'mayoreo') {
@@ -296,7 +205,7 @@ button:hover {
           elementos[id].value = cliente[id] || '';
         }
       });
-      formulario.style.display = 'block';
+      formulario.style.display = 'grid';
       sugerencias.innerHTML = '';
     }
   </script>
