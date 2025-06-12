@@ -80,7 +80,20 @@
       .container {
         padding: 15px;
       }
+      <style>
+  @media print {
+    body * {
+      visibility: hidden;
     }
+    #formulario, #formulario * {
+      visibility: visible;
+    }
+    #formulario {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }    
   </style>
 </head>
 <body>
@@ -118,6 +131,9 @@
       <div class="campo"><label>Comentarios:</label><input id="comentarios" disabled></div>
       <div class="campo"><label><input type="checkbox" id="mayoreo" disabled> Cliente de Mayoreo</label></div>
     </div>
+    <button onclick="window.print()" style="margin-top: 20px; padding: 10px 20px; background-color: #e60000; color: white; border: none; border-radius: 5px; cursor: pointer;">
+  Imprimir Formulario
+</button>
   </div>
 
   <script>
