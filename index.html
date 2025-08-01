@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -14,9 +14,7 @@
       --sombra: rgba(0, 0, 0, 0.1);
       --card-bg: rgba(255, 255, 255, 0.15);
     }
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 20px;
@@ -25,7 +23,6 @@
       color: var(--texto);
       min-height: 100vh;
     }
-    
     .logo-fondo {
       position: fixed;
       top: 50%;
@@ -37,21 +34,14 @@
       height: auto;
       pointer-events: none;
     }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      position: relative;
-      z-index: 2;
-    }
     h2 {
-      text-align: center;
       color: var(--texto);
     }
     input[type="text"] {
       width: 100%;
       max-width: 500px;
       display: block;
-      margin: 0 auto 20px auto;
+      margin-bottom: 10px;
       padding: 12px;
       border-radius: 10px;
       border: none;
@@ -68,12 +58,9 @@
       background: white;
       border: 1px solid #ccc;
       border-radius: 10px;
-      position: absolute;
       max-width: 500px;
       width: 100%;
       z-index: 10;
-      margin: 0 auto;
-      left: 0; right: 0;
     }
     .sugerencias div {
       padding: 10px;
@@ -82,34 +69,6 @@
     }
     .sugerencias div:hover {
       background: #f0f0f0;
-    }
-    .card {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      background-color: var(--card-bg);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px var(--sombra);
-      backdrop-filter: blur(5px);
-      margin-top: 20px;
-    }
-    .campo {
-      display: flex;
-      flex-direction: column;
-    }
-    label {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--texto);
-    }
-    input[disabled] {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 10px;
-      backdrop-filter: blur(5px);
     }
     button {
       background: var(--principal);
@@ -125,95 +84,147 @@
     button:hover {
       background: #c40000;
     }
+
+    .fila-superior {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .titulo-area {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    #foto-cliente {
+      width: 250px;
+      text-align: center;
+    }
+
+    #foto-cliente img {
+      width: 250px;
+      height: 250px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 2px 6px var(--sombra);
+    }
+
+    #formulario-contenedor {
+      display: none;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px var(--sombra);
+      backdrop-filter: blur(5px);
+      flex: 1;
+      min-width: 600px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--texto);
+    }
+
+    input[disabled] {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      backdrop-filter: blur(5px);
+    }
+
     @media (max-width: 768px) {
-      .card {
-        grid-template-columns: 1fr;
+      .fila-superior, #formulario-contenedor {
+        flex-direction: column;
+        align-items: center;
       }
     }
-    @media (max-width: 768px) {
-  #formulario-contenedor {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-    @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    align-items: center;
-  }
-}
   </style>
 </head>
 <body>
   <img src="logo_proveedora.webp" alt="Marca de Agua" class="logo-fondo">
-  <div class="container" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
-  <!-- IZQUIERDA: TÍTULO Y BUSCADOR -->
-  <div style="flex: 1; min-width: 300px;">
-    <h2>Consulta de Clientes</h2>
-    <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
-    <div id="sugerencias" class="sugerencias"></div>
-    <div style="text-align: center; margin-top: 20px;">
-      <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
+
+  <!-- FILA SUPERIOR -->
+  <div class="fila-superior">
+    <!-- Buscador y botón -->
+    <div class="titulo-area">
+      <h2>Consulta de Clientes</h2>
+      <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
+      <div id="sugerencias" class="sugerencias"></div>
+      <div style="text-align: left; margin-top: 10px;">
+        <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
+      </div>
+    </div>
+
+    <!-- Imagen del cliente -->
+    <div id="foto-cliente">
+      <img id="imagenCliente" src="https://via.placeholder.com/250x250?text=FOTO" alt="Foto del Cliente">
+      <div style="margin-top: 8px; color: white; font-weight: 600;">Foto del Cliente</div>
     </div>
   </div>
 
-  <!-- DERECHA: FOTO DEL CLIENTE -->
-  <div id="foto-cliente" style="width: 250px; text-align: center;">
-    <img id="imagenCliente" src="https://via.placeholder.com/250x250?text=FOTO" 
-         alt="Foto del Cliente" 
-         style="width: 250px; height: 250px; border-radius: 12px; object-fit: cover; box-shadow: 0 2px 6px var(--sombra);">
-    <div style="margin-top: 8px; color: white; font-weight: 600;">Foto del Cliente</div>
-  </div>
-</div>
-    <div id="formulario-contenedor" style="display:none; margin-top: 20px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-  <!-- Formulario a la izquierda -->
-  <div id="formulario" class="card" style="flex: 1 1 600px;">
-    <!-- (los campos del cliente van aquí sin cambios) -->
-    <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
-    <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
-    <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
-    <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
-    <div class="campo"><label>Número:</label><input id="numero" disabled></div>
-    <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
-    <div class="campo"><label>CP:</label><input id="cp" disabled></div>
-    <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
-    <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
-    <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
-    <div class="campo"><label>País:</label><input id="pais" disabled></div>
-    <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
-    <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
-    <div class="campo"><label>Email:</label><input id="email" disabled></div>
-    <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
-    <div class="campo"><label>Método de Pago:</label><input id="metodopago" disabled></div>
-    <div class="campo"><label>Forma de Pago:</label><input id="formapago" disabled></div>
-    <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
-    <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
-    <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
-    <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
-    <div class="campo" style="grid-column: span 2;"><label>Comentarios:</label><input id="comentarios" disabled></div>
-    <div class="campo" style="grid-column: span 2;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
+  <!-- FORMULARIO -->
+  <div id="formulario-contenedor">
+    <div id="formulario" class="card">
+      <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
+      <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
+      <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
+      <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
+      <div class="campo"><label>Número:</label><input id="numero" disabled></div>
+      <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
+      <div class="campo"><label>CP:</label><input id="cp" disabled></div>
+      <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
+      <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
+      <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
+      <div class="campo"><label>País:</label><input id="pais" disabled></div>
+      <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
+      <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
+      <div class="campo"><label>Email:</label><input id="email" disabled></div>
+      <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
+      <div class="campo"><label>Método de Pago:</label><input id="metodopago" disabled></div>
+      <div class="campo"><label>Forma de Pago:</label><input id="formapago" disabled></div>
+      <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
+      <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
+      <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
+      <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
+      <div class="campo" style="grid-column: span 2;"><label>Comentarios:</label><input id="comentarios" disabled></div>
+      <div class="campo" style="grid-column: span 2;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
+    </div>
   </div>
 
-  <!-- Imagen del cliente a la derecha -->
-  <div id="foto-cliente" style="flex: 0 0 250px; text-align: center;">
-    <img id="imagenCliente" src="https://via.placeholder.com/250x250?text=FOTO" 
-         alt="Foto del Cliente" 
-         style="width: 250px; height: 250px; border-radius: 12px; object-fit: cover; box-shadow: 0 2px 6px var(--sombra);">
-  </div>
-</div>
-
+  <!-- SCRIPT -->
   <script>
     const { createClient } = supabase;
     const supabaseClient = createClient(
       'https://cvpbtjlupswbyxenugpz.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
+
     const campos = ['nombrefiscal','rfc','regimenfiscal','direccion','numero','colonia','cp','municipio','ciudad','estado','pais','telefono','whatsapp','email','cfdi','metodopago','formapago','entrega','autorizado1','autorizado2','autorizado3','comentarios','mayoreo'];
     const elementos = {};
     campos.forEach(id => elementos[id] = document.getElementById(id));
     const busqueda = document.getElementById('busqueda');
     const sugerencias = document.getElementById('sugerencias');
-    const formulario = document.getElementById('formulario');
+
     busqueda.addEventListener('input', async () => {
       const texto = busqueda.value.trim();
       if (texto.length < 2) {
@@ -225,6 +236,7 @@
         .select(campos.join(','))
         .ilike('nombrefiscal', `%${texto}%`)
         .limit(5);
+
       sugerencias.innerHTML = '';
       data.forEach(cliente => {
         const div = document.createElement('div');
@@ -233,23 +245,22 @@
         sugerencias.appendChild(div);
       });
     });
-   function mostrarCliente(cliente) {
-  campos.forEach(id => {
-    if (id === 'mayoreo') {
-      elementos[id].checked = cliente[id];
-    } else {
-      elementos[id].value = cliente[id] || '';
+
+    function mostrarCliente(cliente) {
+      campos.forEach(id => {
+        if (id === 'mayoreo') {
+          elementos[id].checked = cliente[id];
+        } else {
+          elementos[id].value = cliente[id] || '';
+        }
+      });
+
+      document.getElementById('formulario-contenedor').style.display = 'flex';
+      sugerencias.innerHTML = '';
+
+      const imagen = document.getElementById('imagenCliente');
+      imagen.src = 'https://via.placeholder.com/250x250?text=' + encodeURIComponent(cliente.nombrefiscal);
     }
-  });
-
-  // Muestra el formulario
-  document.getElementById('formulario-contenedor').style.display = 'flex';
-  sugerencias.innerHTML = '';
-
-  // Actualiza imagen (cuando implementes fotos reales, cámbiala)
-  const imagen = document.getElementById('imagenCliente');
-  imagen.src = 'https://via.placeholder.com/250x250?text=' + encodeURIComponent(cliente.nombrefiscal);
-}
   </script>
 </body>
 </html>
