@@ -136,17 +136,35 @@
     align-items: center;
   }
 }
+    @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
   </style>
 </head>
 <body>
   <img src="logo_proveedora.webp" alt="Marca de Agua" class="logo-fondo">
-  <div class="container">
+  <div class="container" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+  <!-- IZQUIERDA: TÍTULO Y BUSCADOR -->
+  <div style="flex: 1; min-width: 300px;">
     <h2>Consulta de Clientes</h2>
     <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
     <div id="sugerencias" class="sugerencias"></div>
     <div style="text-align: center; margin-top: 20px;">
       <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
     </div>
+  </div>
+
+  <!-- DERECHA: FOTO DEL CLIENTE -->
+  <div id="foto-cliente" style="width: 250px; text-align: center;">
+    <img id="imagenCliente" src="https://via.placeholder.com/250x250?text=FOTO" 
+         alt="Foto del Cliente" 
+         style="width: 250px; height: 250px; border-radius: 12px; object-fit: cover; box-shadow: 0 2px 6px var(--sombra);">
+    <div style="margin-top: 8px; color: white; font-weight: 600;">Foto del Cliente</div>
+  </div>
+</div>
     <div id="formulario-contenedor" style="display:none; margin-top: 20px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
   <!-- Formulario a la izquierda -->
   <div id="formulario" class="card" style="flex: 1 1 600px;">
@@ -215,17 +233,23 @@
         sugerencias.appendChild(div);
       });
     });
-    function mostrarCliente(cliente) {
-      campos.forEach(id => {
-        if (id === 'mayoreo') {
-          elementos[id].checked = cliente[id];
-        } else {
-          elementos[id].value = cliente[id] || '';
-        }
-      });
-     document.getElementById('formulario-contenedor').style.display = 'flex';
-sugerencias.innerHTML = '';
+   function mostrarCliente(cliente) {
+  campos.forEach(id => {
+    if (id === 'mayoreo') {
+      elementos[id].checked = cliente[id];
+    } else {
+      elementos[id].value = cliente[id] || '';
     }
+  });
+
+  // Muestra el formulario
+  document.getElementById('formulario-contenedor').style.display = 'flex';
+  sugerencias.innerHTML = '';
+
+  // Actualiza imagen (cuando implementes fotos reales, cámbiala)
+  const imagen = document.getElementById('imagenCliente');
+  imagen.src = 'https://via.placeholder.com/250x250?text=' + encodeURIComponent(cliente.nombrefiscal);
+}
   </script>
 </body>
 </html>
