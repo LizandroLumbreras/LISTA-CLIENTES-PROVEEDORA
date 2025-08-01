@@ -97,25 +97,43 @@
       background: #c40000;
     }
 
+    .fila-superior {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
     .titulo-area {
       max-width: 700px;
+      flex: 1;
     }
 
-    #foto-cliente {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      text-align: center;
+    .fotos-derecha {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .foto-box {
       width: 150px;
-      z-index: 3;
+      text-align: center;
     }
 
-    #foto-cliente img {
+    .foto-box img {
       width: 150px;
       height: 150px;
       border-radius: 12px;
       object-fit: cover;
       box-shadow: 0 2px 6px var(--sombra);
+    }
+
+    .foto-label {
+      margin-top: 4px;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
     }
 
     #formulario-contenedor {
@@ -159,9 +177,12 @@
     }
 
     @media (max-width: 768px) {
-      #foto-cliente {
-        position: static;
-        margin: 0 auto 20px auto;
+      .fila-superior {
+        flex-direction: column;
+        align-items: center;
+      }
+      .fotos-derecha {
+        justify-content: center;
       }
     }
   </style>
@@ -169,19 +190,36 @@
 <body>
   <img src="logo_proveedora.webp" alt="Marca de Agua" class="logo-fondo">
 
-  <!-- Foto flotante en la esquina superior derecha -->
-  <div id="foto-cliente">
-    <img id="imagenCliente" src="https://via.placeholder.com/150x150?text=FOTO" alt="Foto del Cliente">
-    <div style="margin-top: 4px; color: white; font-weight: 600; font-size: 14px;">Foto del Cliente</div>
-  </div>
+  <!-- Buscador + Fotos -->
+  <div class="fila-superior">
+    <!-- Buscador -->
+    <div class="titulo-area">
+      <h2>Consulta de Clientes</h2>
+      <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
+      <div id="sugerencias" class="sugerencias"></div>
+      <div style="text-align: left; margin-top: 10px;">
+        <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
+      </div>
+    </div>
 
-  <!-- Área de búsqueda -->
-  <div class="titulo-area">
-    <h2>Consulta de Clientes</h2>
-    <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
-    <div id="sugerencias" class="sugerencias"></div>
-    <div style="text-align: left; margin-top: 10px;">
-      <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
+    <!-- Fotos -->
+    <div class="fotos-derecha">
+      <div class="foto-box">
+        <img id="imagenCliente" src="https://via.placeholder.com/150x150?text=FOTO" alt="Foto del Cliente">
+        <div class="foto-label">Cliente</div>
+      </div>
+      <div class="foto-box" id="autorizado1Box" style="display:none;">
+        <img id="autorizado1Foto" src="" alt="Autorizado 1">
+        <div class="foto-label">Autorizado 1</div>
+      </div>
+      <div class="foto-box" id="autorizado2Box" style="display:none;">
+        <img id="autorizado2Foto" src="" alt="Autorizado 2">
+        <div class="foto-label">Autorizado 2</div>
+      </div>
+      <div class="foto-box" id="autorizado3Box" style="display:none;">
+        <img id="autorizado3Foto" src="" alt="Autorizado 3">
+        <div class="foto-label">Autorizado 3</div>
+      </div>
     </div>
   </div>
 
@@ -214,7 +252,6 @@
     </div>
   </div>
 
-  <!-- Script -->
   <script>
     const { createClient } = supabase;
     const supabaseClient = createClient(
@@ -261,9 +298,33 @@
       document.getElementById('formulario-contenedor').style.display = 'flex';
       sugerencias.innerHTML = '';
 
-      const imagen = document.getElementById('imagenCliente');
-      imagen.src = 'https://via.placeholder.com/150x150?text=' + encodeURIComponent(cliente.nombrefiscal);
+      document.getElementById('imagenCliente').src = 'https://via.placeholder.com/150x150?text=' + encodeURIComponent(cliente.nombrefiscal);
+
+      // Autorizado 1
+      if (cliente.autorizado1) {
+        document.getElementById('autorizado1Box').style.display = 'block';
+        document.getElementById('autorizado1Foto').src = 'https://via.placeholder.com/150x150?text=' + encodeURIComponent(cliente.autorizado1);
+      } else {
+        document.getElementById('autorizado1Box').style.display = 'none';
+      }
+
+      // Autorizado 2
+      if (cliente.autorizado2) {
+        document.getElementById('autorizado2Box').style.display = 'block';
+        document.getElementById('autorizado2Foto').src = 'https://via.placeholder.com/150x150?text=' + encodeURIComponent(cliente.autorizado2);
+      } else {
+        document.getElementById('autorizado2Box').style.display = 'none';
+      }
+
+      // Autorizado 3
+      if (cliente.autorizado3) {
+        document.getElementById('autorizado3Box').style.display = 'block';
+        document.getElementById('autorizado3Foto').src = 'https://via.placeholder.com/150x150?text=' + encodeURIComponent(cliente.autorizado3);
+      } else {
+        document.getElementById('autorizado3Box').style.display = 'none';
+      }
     }
   </script>
 </body>
 </html>
+
