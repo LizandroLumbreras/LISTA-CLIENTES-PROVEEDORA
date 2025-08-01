@@ -19,12 +19,34 @@
     }
     body {
       margin: 0;
+      padding: 0;
+      background-image: url('fondo.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f4f6;
+      color: #333;
+    }
+    .container {
+  max-width: 800px;
+  margin: auto;
+  padding: 10px;
+  position: relative;
+  z-index: 1; /* asegura que esté encima del logo de fondo */
+}
+    .logo {
+      text-align: center;
+      margin-bottom: 00px;
       padding: 20px;
       font-family: 'Poppins', sans-serif;
       background: var(--fondo);
       color: var(--texto);
       min-height: 100vh;
     }
+    .logo img {
+      max-width: 300px;
     .logo-fondo {
       position: fixed;
       top: 50%;
@@ -44,33 +66,60 @@
     }
     h2 {
       text-align: center;
+      margin-bottom: 10px;
+      color: #e60000;
       color: var(--texto);
     }
     input[type="text"] {
       width: 100%;
+      max-width: 400px;
+      margin: 0 auto 20px auto;
       max-width: 500px;
       display: block;
       margin: 0 auto 20px auto;
       padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(5px);
+      color: #111;
       border-radius: 10px;
       border: none;
       background: rgba(255, 255, 255, 0.2);
       color: white;
       font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
       backdrop-filter: blur(5px);
       box-shadow: 0 2px 6px var(--sombra);
     }
     input::placeholder {
       color: #eee;
     }
+    input[disabled] {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  min-width: 0;
+  width: auto; /* se adapta al contenido */
+  flex: 1;
+  color: #111;
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+  text-overflow: ellipsis; /* importante para que no desborde */
+  white-space: nowrap;
+}
     .sugerencias {
       background: white;
       border: 1px solid #ccc;
+      border-radius: 8px;
       border-radius: 10px;
       position: absolute;
       max-width: 500px;
       width: 100%;
       z-index: 10;
+      max-width: 100%;
       margin: 0 auto;
       left: 0; right: 0;
     }
@@ -82,6 +131,24 @@
     .sugerencias div:hover {
       background: #f0f0f0;
     }
+  .card {
+  display: grid;
+  grid-template-columns: auto auto auto auto; /* ← se ajusta al contenido */
+  gap: 12px 24px;
+  background: rgba(255, 255, 255, 0.35);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  margin-top: 20px;
+  backdrop-filter: blur(6px);
+  color: #111;
+  box-sizing: border-box;
+}
+  .campo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
     .card {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -99,7 +166,34 @@
     }
     label {
       font-weight: 600;
+      display: block;
       margin-bottom: 4px;
+      color: #111;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    }
+   input[disabled] {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  width: auto;              /* ← permite que el input se ajuste */
+  max-width: 100%;
+  color: #111;
+  backdrop-filter: blur(5px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+    @media (max-width: 1024px) {
+  .card {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+}
       color: var(--texto);
     }
     input[disabled] {
@@ -111,74 +205,57 @@
       backdrop-filter: blur(5px);
     }
     button {
+      background: rgba(230, 0, 0, 0.85);
       background: var(--principal);
       color: white;
       border: none;
+      border-radius: 5px;
       border-radius: 8px;
       padding: 10px 20px;
       font-size: 16px;
       cursor: pointer;
+      backdrop-filter: blur(1px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       box-shadow: 0 2px 6px var(--sombra);
       transition: background 0.3s;
     }
     button:hover {
+      background: rgba(200, 0, 0, 0.95);
       background: #c40000;
     }
     @media (max-width: 768px) {
       .card {
         grid-template-columns: 1fr;
       }
-      .contenedor-imagen-cliente {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  width: 150px;
-  height: 190px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-}
-
-#fotoCliente {
-  width: 120px;
-  height: 120px;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-
-#tomarFoto {
-  padding: 5px 10px;
-  font-size: 14px;
-  background: #e60000;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
     }
+    .logo-fondo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  opacity: 0.30; /* ajusta transparencia aquí */
+  max-width: 60%;
+  height: auto;
+  pointer-events: none;
+}
   </style>
 </head>
 <body>
+  <img src="logo_proveedora.png" alt="Fondo La Proveedora" class="logo-fondo">
   <img src="logo_proveedora.webp" alt="Marca de Agua" class="logo-fondo">
   <div class="container">
+    </div>
     <h2>Consulta de Clientes</h2>
     <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
     <div id="sugerencias" class="sugerencias"></div>
     <div style="text-align: center; margin-top: 20px;">
+      <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">
+        Imprimir Formulario Completo
+      </button>
       <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
     </div>
-    <div class="contenedor-imagen-cliente">
-  <video id="video" autoplay style="display: none;"></video>
-  <canvas id="canvas" style="display: none;"></canvas>
-  <img id="fotoCliente" src="default.png" alt="Foto del Cliente" />
-  <button id="tomarFoto">📷 Tomar Foto</button>
-</div>
+    <div id="formulario" class="card" style="display:none">
     <div id="formulario" class="card" style="display:none;">
       <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
       <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
@@ -201,6 +278,8 @@
       <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
       <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
       <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
+      <div class="campo" style="grid-column: span 4;"><label>Comentarios:</label><input id="comentarios" disabled></div>
+      <div class="campo" style="grid-column: span 4;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
       <div class="campo" style="grid-column: span 2;"><label>Comentarios:</label><input id="comentarios" disabled></div>
       <div class="campo" style="grid-column: span 2;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
     </div>
@@ -212,6 +291,7 @@
       'https://cvpbtjlupswbyxenugpz.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
+    const campos = ['nombrefiscal', 'rfc', 'regimenfiscal', 'direccion', 'numero', 'colonia', 'cp', 'municipio', 'ciudad', 'estado', 'pais', 'telefono', 'whatsapp', 'email', 'cfdi', 'metodopago', 'formapago', 'entrega', 'autorizado1', 'autorizado2', 'autorizado3', 'comentarios', 'mayoreo'];
     const campos = ['nombrefiscal','rfc','regimenfiscal','direccion','numero','colonia','cp','municipio','ciudad','estado','pais','telefono','whatsapp','email','cfdi','metodopago','formapago','entrega','autorizado1','autorizado2','autorizado3','comentarios','mayoreo'];
     const elementos = {};
     campos.forEach(id => elementos[id] = document.getElementById(id));
@@ -241,11 +321,6 @@
       campos.forEach(id => {
         if (id === 'mayoreo') {
           elementos[id].checked = cliente[id];
-          if (cliente.foto_url) {
-  fotoCliente.src = cliente.foto_url;
-  fotoCliente.style.display = 'block';
-  video.style.display = 'none';
-}
         } else {
           elementos[id].value = cliente[id] || '';
         }
@@ -253,83 +328,6 @@
       formulario.style.display = 'grid';
       sugerencias.innerHTML = '';
     }
-  
-  const video = document.getElementById('video');
-  const canvas = document.getElementById('canvas');
-  const fotoCliente = document.getElementById('fotoCliente');
-  const tomarFotoBtn = document.getElementById('tomarFoto');
-
-  let streaming = false;
-
- tomarFotoBtn.addEventListener('click', async () => {
-  if (!streaming) {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
-      video.style.display = 'block';
-      fotoCliente.style.display = 'none';
-      tomarFotoBtn.textContent = '📸 Capturar';
-      streaming = true;
-    } catch (err) {
-      alert('No se pudo acceder a la cámara.');
-    }
-  } else {
-    // Captura la imagen
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0);
-    const imageData = canvas.toDataURL('image/png');
-    const blob = await (await fetch(imageData)).blob();
-
-    // Generar nombre del archivo basado en el nombre fiscal
-    const nombreFiscal = elementos.nombrefiscal.value || 'cliente';
-    const nombreArchivo = `${nombreFiscal.replace(/\s+/g, "_")}_${Date.now()}.png`;
-
-    // SUBIR A SUPABASE - Bucket existente: fotos-facturas
-    const { data: subida, error: errorSubida } = await supabaseClient.storage
-      .from('fotos-facturas')
-      .upload(nombreArchivo, blob, {
-        contentType: 'image/png',
-        upsert: true
-      });
-
-    if (errorSubida) {
-      alert("Error al subir la imagen: " + errorSubida.message);
-      return;
-    }
-
-    // Obtener URL pública
-    const { data: urlData } = supabaseClient
-      .storage
-      .from('fotos-facturas')
-      .getPublicUrl(nombreArchivo);
-
-    const publicURL = urlData.publicUrl;
-
-    // Mostrar imagen capturada
-    fotoCliente.src = publicURL;
-    fotoCliente.style.display = 'block';
-    video.style.display = 'none';
-    tomarFotoBtn.textContent = '📷 Tomar Otra';
-    streaming = false;
-
-    // Detener cámara
-    video.srcObject.getTracks().forEach(track => track.stop());
-
-    // GUARDAR URL en columna foto_url
-    const nombreCliente = elementos.nombrefiscal.value;
-    const { error: errorUpdate } = await supabaseClient
-      .from('clientes')
-      .update({ foto_url: publicURL })
-      .eq('nombrefiscal', nombreCliente);
-
-    if (errorUpdate) {
-      alert('Error al guardar la URL de la imagen en el cliente.');
-    } else {
-      alert('✅ Foto guardada correctamente en Supabase.');
-    }
-  }
-});
   </script>
 </body>
 </html>
