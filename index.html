@@ -14,7 +14,9 @@
       --sombra: rgba(0, 0, 0, 0.1);
       --card-bg: rgba(255, 255, 255, 0.15);
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       padding: 20px;
@@ -22,7 +24,9 @@
       background: var(--fondo);
       color: var(--texto);
       min-height: 100vh;
+      position: relative;
     }
+
     .logo-fondo {
       position: fixed;
       top: 50%;
@@ -34,9 +38,11 @@
       height: auto;
       pointer-events: none;
     }
+
     h2 {
       color: var(--texto);
     }
+
     input[type="text"] {
       width: 100%;
       max-width: 500px;
@@ -51,9 +57,11 @@
       backdrop-filter: blur(5px);
       box-shadow: 0 2px 6px var(--sombra);
     }
+
     input::placeholder {
       color: #eee;
     }
+
     .sugerencias {
       background: white;
       border: 1px solid #ccc;
@@ -62,14 +70,17 @@
       width: 100%;
       z-index: 10;
     }
+
     .sugerencias div {
       padding: 10px;
       cursor: pointer;
       color: black;
     }
+
     .sugerencias div:hover {
       background: #f0f0f0;
     }
+
     button {
       background: var(--principal);
       color: white;
@@ -81,32 +92,27 @@
       box-shadow: 0 2px 6px var(--sombra);
       transition: background 0.3s;
     }
+
     button:hover {
       background: #c40000;
     }
 
-    .fila-superior {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
     .titulo-area {
-      flex: 1;
-      min-width: 300px;
+      max-width: 700px;
     }
 
     #foto-cliente {
-      width: 250px;
+      position: absolute;
+      top: 30px;
+      right: 30px;
       text-align: center;
+      width: 150px;
+      z-index: 3;
     }
 
     #foto-cliente img {
-      width: 250px;
-      height: 250px;
+      width: 150px;
+      height: 150px;
       border-radius: 12px;
       object-fit: cover;
       box-shadow: 0 2px 6px var(--sombra);
@@ -116,7 +122,7 @@
       display: none;
       gap: 20px;
       flex-wrap: wrap;
-      margin-top: 20px;
+      margin-top: 30px;
     }
 
     .card {
@@ -153,9 +159,9 @@
     }
 
     @media (max-width: 768px) {
-      .fila-superior, #formulario-contenedor {
-        flex-direction: column;
-        align-items: center;
+      #foto-cliente {
+        position: static;
+        margin: 0 auto 20px auto;
       }
     }
   </style>
@@ -163,26 +169,23 @@
 <body>
   <img src="logo_proveedora.webp" alt="Marca de Agua" class="logo-fondo">
 
-  <!-- FILA SUPERIOR -->
-  <div class="fila-superior">
-    <!-- Buscador y botón -->
-    <div class="titulo-area">
-      <h2>Consulta de Clientes</h2>
-      <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
-      <div id="sugerencias" class="sugerencias"></div>
-      <div style="text-align: left; margin-top: 10px;">
-        <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
-      </div>
-    </div>
+  <!-- Foto flotante en la esquina superior derecha -->
+  <div id="foto-cliente">
+    <img id="imagenCliente" src="https://via.placeholder.com/150x150?text=FOTO" alt="Foto del Cliente">
+    <div style="margin-top: 4px; color: white; font-weight: 600; font-size: 14px;">Foto del Cliente</div>
+  </div>
 
-    <!-- Imagen del cliente -->
-    <div id="foto-cliente">
-      <img id="imagenCliente" src="https://via.placeholder.com/250x250?text=FOTO" alt="Foto del Cliente">
-      <div style="margin-top: 8px; color: white; font-weight: 600;">Foto del Cliente</div>
+  <!-- Área de búsqueda -->
+  <div class="titulo-area">
+    <h2>Consulta de Clientes</h2>
+    <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
+    <div id="sugerencias" class="sugerencias"></div>
+    <div style="text-align: left; margin-top: 10px;">
+      <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
     </div>
   </div>
 
-  <!-- FORMULARIO -->
+  <!-- Formulario -->
   <div id="formulario-contenedor">
     <div id="formulario" class="card">
       <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
@@ -211,7 +214,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT -->
+  <!-- Script -->
   <script>
     const { createClient } = supabase;
     const supabaseClient = createClient(
@@ -259,7 +262,7 @@
       sugerencias.innerHTML = '';
 
       const imagen = document.getElementById('imagenCliente');
-      imagen.src = 'https://via.placeholder.com/250x250?text=' + encodeURIComponent(cliente.nombrefiscal);
+      imagen.src = 'https://via.placeholder.com/150x150?text=' + encodeURIComponent(cliente.nombrefiscal);
     }
   </script>
 </body>
