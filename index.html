@@ -25,6 +25,7 @@
       color: var(--texto);
       min-height: 100vh;
     }
+    
     .logo-fondo {
       position: fixed;
       top: 50%;
@@ -129,6 +130,12 @@
         grid-template-columns: 1fr;
       }
     }
+    @media (max-width: 768px) {
+  #formulario-contenedor {
+    flex-direction: column;
+    align-items: center;
+  }
+}
   </style>
 </head>
 <body>
@@ -140,32 +147,42 @@
     <div style="text-align: center; margin-top: 20px;">
       <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
     </div>
-    <div id="formulario" class="card" style="display:none;">
-      <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
-      <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
-      <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
-      <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
-      <div class="campo"><label>Número:</label><input id="numero" disabled></div>
-      <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
-      <div class="campo"><label>CP:</label><input id="cp" disabled></div>
-      <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
-      <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
-      <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
-      <div class="campo"><label>País:</label><input id="pais" disabled></div>
-      <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
-      <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
-      <div class="campo"><label>Email:</label><input id="email" disabled></div>
-      <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
-      <div class="campo"><label>Método de Pago:</label><input id="metodopago" disabled></div>
-      <div class="campo"><label>Forma de Pago:</label><input id="formapago" disabled></div>
-      <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
-      <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
-      <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
-      <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
-      <div class="campo" style="grid-column: span 2;"><label>Comentarios:</label><input id="comentarios" disabled></div>
-      <div class="campo" style="grid-column: span 2;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
-    </div>
+    <div id="formulario-contenedor" style="display:none; margin-top: 20px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+  <!-- Formulario a la izquierda -->
+  <div id="formulario" class="card" style="flex: 1 1 600px;">
+    <!-- (los campos del cliente van aquí sin cambios) -->
+    <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
+    <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
+    <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
+    <div class="campo"><label>Dirección:</label><input id="direccion" disabled></div>
+    <div class="campo"><label>Número:</label><input id="numero" disabled></div>
+    <div class="campo"><label>Colonia:</label><input id="colonia" disabled></div>
+    <div class="campo"><label>CP:</label><input id="cp" disabled></div>
+    <div class="campo"><label>Municipio:</label><input id="municipio" disabled></div>
+    <div class="campo"><label>Ciudad:</label><input id="ciudad" disabled></div>
+    <div class="campo"><label>Estado:</label><input id="estado" disabled></div>
+    <div class="campo"><label>País:</label><input id="pais" disabled></div>
+    <div class="campo"><label>Teléfono:</label><input id="telefono" disabled></div>
+    <div class="campo"><label>WhatsApp:</label><input id="whatsapp" disabled></div>
+    <div class="campo"><label>Email:</label><input id="email" disabled></div>
+    <div class="campo"><label>Uso CFDI:</label><input id="cfdi" disabled></div>
+    <div class="campo"><label>Método de Pago:</label><input id="metodopago" disabled></div>
+    <div class="campo"><label>Forma de Pago:</label><input id="formapago" disabled></div>
+    <div class="campo"><label>Entrega:</label><input id="entrega" disabled></div>
+    <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
+    <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
+    <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
+    <div class="campo" style="grid-column: span 2;"><label>Comentarios:</label><input id="comentarios" disabled></div>
+    <div class="campo" style="grid-column: span 2;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
   </div>
+
+  <!-- Imagen del cliente a la derecha -->
+  <div id="foto-cliente" style="flex: 0 0 250px; text-align: center;">
+    <img id="imagenCliente" src="https://via.placeholder.com/250x250?text=FOTO" 
+         alt="Foto del Cliente" 
+         style="width: 250px; height: 250px; border-radius: 12px; object-fit: cover; box-shadow: 0 2px 6px var(--sombra);">
+  </div>
+</div>
 
   <script>
     const { createClient } = supabase;
@@ -206,8 +223,8 @@
           elementos[id].value = cliente[id] || '';
         }
       });
-      formulario.style.display = 'grid';
-      sugerencias.innerHTML = '';
+     document.getElementById('formulario-contenedor').style.display = 'flex';
+sugerencias.innerHTML = '';
     }
   </script>
 </body>
