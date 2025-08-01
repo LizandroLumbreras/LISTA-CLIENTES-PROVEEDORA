@@ -5,171 +5,142 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Consulta de Clientes</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --principal: #e60000;
+      --texto: white;
+      --fondo: linear-gradient(to right, #00416A, #E4E5E6);
+      --sombra: rgba(0, 0, 0, 0.1);
+      --card-bg: rgba(255, 255, 255, 0.15);
+    }
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
-      padding: 0;
-      background-image: url('fondo.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-attachment: fixed;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f3f4f6;
-      color: #333;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+    .logo-fondo {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      opacity: 0.08;
+      max-width: 70%;
+      height: auto;
+      pointer-events: none;
     }
     .container {
-  max-width: 800px;
-  margin: auto;
-  padding: 10px;
-  position: relative;
-  z-index: 1; /* asegura que esté encima del logo de fondo */
-}
-    .logo {
-      text-align: center;
-      margin-bottom: 00px;
-    }
-    .logo img {
-      max-width: 300px;
-      height: auto;
+      max-width: 900px;
+      margin: auto;
+      position: relative;
+      z-index: 2;
     }
     h2 {
       text-align: center;
-      margin-bottom: 10px;
-      color: #e60000;
+      color: var(--texto);
     }
     input[type="text"] {
       width: 100%;
-      max-width: 400px;
-      margin: 0 auto 20px auto;
+      max-width: 500px;
       display: block;
+      margin: 0 auto 20px auto;
       padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      background: rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(5px);
-      color: #111;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
       font-size: 16px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      transition: all 0.2s ease;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 6px var(--sombra);
     }
-    input[disabled] {
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 6px;
-  min-width: 0;
-  width: auto; /* se adapta al contenido */
-  flex: 1;
-  color: #111;
-  backdrop-filter: blur(5px);
-  overflow: hidden;
-  text-overflow: ellipsis; /* importante para que no desborde */
-  white-space: nowrap;
-}
+    input::placeholder {
+      color: #eee;
+    }
     .sugerencias {
       background: white;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
       position: absolute;
+      max-width: 500px;
+      width: 100%;
       z-index: 10;
-      max-width: 100%;
+      margin: 0 auto;
+      left: 0; right: 0;
     }
     .sugerencias div {
       padding: 10px;
       cursor: pointer;
+      color: black;
     }
     .sugerencias div:hover {
       background: #f0f0f0;
     }
-  .card {
-  display: grid;
-  grid-template-columns: auto auto auto auto; /* ← se ajusta al contenido */
-  gap: 12px 24px;
-  background: rgba(255, 255, 255, 0.35);
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  margin-top: 20px;
-  backdrop-filter: blur(6px);
-  color: #111;
-  box-sizing: border-box;
-}
-  .campo {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
+    .card {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px var(--sombra);
+      backdrop-filter: blur(5px);
+      margin-top: 20px;
+    }
+    .campo {
+      display: flex;
+      flex-direction: column;
+    }
     label {
       font-weight: 600;
-      display: block;
       margin-bottom: 4px;
-      color: #111;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+      color: var(--texto);
     }
-   input[disabled] {
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 6px;
-  width: auto;              /* ← permite que el input se ajuste */
-  max-width: 100%;
-  color: #111;
-  backdrop-filter: blur(5px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-    @media (max-width: 1024px) {
-  .card {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (max-width: 768px) {
-  .card {
-    grid-template-columns: 1fr;
-  }
-}
-    button {
-      background: rgba(230, 0, 0, 0.85);
+    input[disabled] {
+      background: rgba(255, 255, 255, 0.2);
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      padding: 10px;
+      backdrop-filter: blur(5px);
+    }
+    button {
+      background: var(--principal);
+      color: white;
+      border: none;
+      border-radius: 8px;
       padding: 10px 20px;
+      font-size: 16px;
       cursor: pointer;
-      backdrop-filter: blur(1px);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px var(--sombra);
       transition: background 0.3s;
     }
     button:hover {
-      background: rgba(200, 0, 0, 0.95);
+      background: #c40000;
     }
-    .logo-fondo {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  opacity: 0.30; /* ajusta transparencia aquí */
-  max-width: 60%;
-  height: auto;
-  pointer-events: none;
-}
+    @media (max-width: 768px) {
+      .card {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <img src="logo_proveedora.png" alt="Fondo La Proveedora" class="logo-fondo">
+  <img src="logo_proveedora.webp" alt="Marca de Agua" class="logo-fondo">
   <div class="container">
-    </div>
     <h2>Consulta de Clientes</h2>
     <input type="text" id="busqueda" placeholder="Buscar cliente por nombre fiscal..." autocomplete="off">
     <div id="sugerencias" class="sugerencias"></div>
     <div style="text-align: center; margin-top: 20px;">
-      <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">
-        Imprimir Formulario Completo
-      </button>
+      <button onclick="window.open('https://lizandrolumbreras.github.io/FORMULARIO--CIENTES-PROVTEC25/?imprimir', '_blank')">Imprimir Formulario Completo</button>
     </div>
-    <div id="formulario" class="card" style="display:none">
+    <div id="formulario" class="card" style="display:none;">
       <div class="campo"><label>Nombre Fiscal:</label><input id="nombrefiscal" disabled></div>
       <div class="campo"><label>RFC:</label><input id="rfc" disabled></div>
       <div class="campo"><label>Régimen Fiscal:</label><input id="regimenfiscal" disabled></div>
@@ -191,17 +162,18 @@
       <div class="campo"><label>Autorizado 1:</label><input id="autorizado1" disabled></div>
       <div class="campo"><label>Autorizado 2:</label><input id="autorizado2" disabled></div>
       <div class="campo"><label>Autorizado 3:</label><input id="autorizado3" disabled></div>
-      <div class="campo" style="grid-column: span 4;"><label>Comentarios:</label><input id="comentarios" disabled></div>
-      <div class="campo" style="grid-column: span 4;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
+      <div class="campo" style="grid-column: span 2;"><label>Comentarios:</label><input id="comentarios" disabled></div>
+      <div class="campo" style="grid-column: span 2;"><label>Cliente de Mayoreo:</label><input type="checkbox" id="mayoreo" disabled></div>
     </div>
   </div>
+
   <script>
     const { createClient } = supabase;
     const supabaseClient = createClient(
       'https://cvpbtjlupswbyxenugpz.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2cGJ0amx1cHN3Ynl4ZW51Z3B6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MDIxOTQsImV4cCI6MjA2MzI3ODE5NH0.iiJsYM3TtaGPdeCtPcEXwAz3LfFc1uJGECEvOErvrqY'
     );
-    const campos = ['nombrefiscal', 'rfc', 'regimenfiscal', 'direccion', 'numero', 'colonia', 'cp', 'municipio', 'ciudad', 'estado', 'pais', 'telefono', 'whatsapp', 'email', 'cfdi', 'metodopago', 'formapago', 'entrega', 'autorizado1', 'autorizado2', 'autorizado3', 'comentarios', 'mayoreo'];
+    const campos = ['nombrefiscal','rfc','regimenfiscal','direccion','numero','colonia','cp','municipio','ciudad','estado','pais','telefono','whatsapp','email','cfdi','metodopago','formapago','entrega','autorizado1','autorizado2','autorizado3','comentarios','mayoreo'];
     const elementos = {};
     campos.forEach(id => elementos[id] = document.getElementById(id));
     const busqueda = document.getElementById('busqueda');
